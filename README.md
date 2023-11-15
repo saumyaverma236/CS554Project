@@ -1,9 +1,33 @@
 ﻿# CS554Project
 
-Project Members: 
+## Description
+
+TODO
+
+## How to Run
+
+TODO
+
+## Project Members: 
 - Aditya Gupta
-- Parshotan Seenanan
+- [Parshotan Seenanan](https://github.com/parshsee)
 - Saumya Verma
+
+## Technologies
+
+- React
+
+## References
+
+### Dependencies
+
+#### Front-End
+
+#### Back-End
+
+### APIs Used
+
+Spotify API: <https://developer.spotify.com/documentation/web-api>
 
 # React + Vite
 
