@@ -6,8 +6,8 @@ import dotenv from 'dotenv';
 import xss from 'xss';
 
 dotenv.config();
-const CLIENT_ID = process.env.CLIENT_ID // Your client id
-const CLIENT_SECRET = process.env.CLIENT_SECRET; // Your secret
+const CLIENT_ID = "f390e52ef3e0415eb2b5abb8ee79a147" // Your client id
+const CLIENT_SECRET = "76a5ff2b5a4f4d07bca9330217c5fb8f"; // Your secret
 const redirect_uri = 'http://localhost:3000/users/callback'; // Your redirect uri
 
 const generateRandomString = (length) => {
@@ -23,10 +23,12 @@ const generateRandomString = (length) => {
 const stateKey = 'spotify_auth_state';
 router
   .route('/login')
+  // .get(async (req, res) => {
+  //   console.log("login page")
+  //   res.status(200).render('pages/login', { title: "Login" })
+  // })
   .get(async (req, res) => {
-    res.status(200).render('pages/login', { title: "Login" })
-  })
-  .post(async (req, res) => {
+    console.log("login post")
 
     let error = false;
 
@@ -42,7 +44,7 @@ router
 
     // your application requests authorization
     const scope = 'user-read-private user-read-email user-top-read user-read-recently-played';
-    res.redirect(
+    return res.json(
       'https://accounts.spotify.com/authorize?' + querystring.stringify({
         response_type: 'code',
         client_id: CLIENT_ID,
@@ -55,6 +57,7 @@ router
 
 
 router.get('/callback', async (req, res) => {
+  console.log("callback")
   // your application requests refresh and access tokens
   // after checking the state parameter
   const code = req.query.code || null;
@@ -97,7 +100,8 @@ router.get('/callback', async (req, res) => {
 
         console.log(access_token);
 
-        res.redirect('/users/dashboard');
+        return res.redirect(`http://localhost:5173/dashboard?access_token=${access_token}`);
+   
       } else {
         res.redirect('/#' + querystring.stringify({ error: 'invalid_token' }));
       }
@@ -137,9 +141,11 @@ router.get('/refresh_token', async (req, res) => {
 
 
 router.get('/dashboard', (req, res) => {
+  console.log("dashboard page")
   if (req.session.user && req.session.user.access_token) {
+    console.log(req.session.user)
     // If there is a user session and an access token, assume connection is successful
-    res.status(200).send('Successfully connected to Spotify');
+    return res.status(200).json('Successfully connected to Spotify');
   } else {
     // If there is no user session or access token, redirect to login or home
     res.redirect("/");
