@@ -1,24 +1,14 @@
 import { useState } from "react";
 import ReactModal from "react-modal";
 import SearchBar from "./SearchBar";
+import SearchResultsList from "./SearchResultsList";
 
+// Set the Modal
 ReactModal.setAppElement('#root');
-const customStyles = {
-    content: {
-        top: '50%',
-        left: '50%',
-        right: 'auto',
-        bottom: 'auto',
-        marginRight: '-50%',
-        transform: 'translate(-50%, -50%)',
-        width: '50%',
-        border: '1px solid #28547a',
-        borderRadius: '4px'
-    }
-};
 
 export default function SearchModal(props) {
     const [showSearchModal, setShowSearchModal] = useState(props.isOpen);
+    const [searchResults, setSearchResults] = useState([]);
 
     const handleCloseSearchModal = () => {
         setShowSearchModal(false);
@@ -32,9 +22,9 @@ export default function SearchModal(props) {
                 name='searchModal'
                 isOpen={showSearchModal}
                 contentLabel='Search'
-                style={customStyles}
             >
-                <SearchBar />
+                <SearchBar setResults={setSearchResults} />
+                <SearchResultsList searchResults={searchResults} />
                 <br />
                 <br />
                 <button onClick={handleCloseSearchModal}>
