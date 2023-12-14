@@ -6,16 +6,11 @@ import SignUp from './components/SignUp'
 import Landing from './components/Landing'
 import Navigation from './components/Navigation'
 import Dashboard from './components/Dashboard'
-// import {AuthProvider} from '../context/AuthContext';
-import  {AuthProvider}  from "./firebase/Auth";
+import {AuthProvider} from './context/AuthContext';
+
 
 function App() {
   return (
-    // <>
-
-    // HELLO
-    // </>
-   
     <AuthProvider>
       <div className='App'>
         <header className='App-header card'>

@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { AuthContext } from '../firebase/Auth';
+import { AuthContext } from '../context/AuthContext';
 import '../App.css';
 import axios from 'axios';
 

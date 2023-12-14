@@ -1,21 +1,20 @@
 import React, {useState, useEffect} from 'react';
-//  import {firebaseApp} from './FirebaseFunctions'
-
-import {firebaseApp} from './FirebaseConfig'
-
-
-
+import {getAuth, onAuthStateChanged} from 'firebase/auth';
 export const AuthContext = React.createContext();
 
 export const AuthProvider = ({children}) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [loadingUser, setLoadingUser] = useState(true);
-
+  const auth = getAuth();
   useEffect(() => {
-     firebaseApp.auth().onAuthStateChanged((user) => {
+    let myListener = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
+      console.log('onAuthStateChanged', user);
       setLoadingUser(false);
     });
+    return () => {
+      if (myListener) myListener();
+    };
   }, []);
 
   if (loadingUser) {
@@ -32,5 +31,3 @@ export const AuthProvider = ({children}) => {
     </AuthContext.Provider>
   );
 };
-
-
