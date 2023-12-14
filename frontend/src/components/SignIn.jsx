@@ -1,13 +1,10 @@
 import React, {useContext} from 'react';
 import SocialSignIn from './SocialSignIn';
 import {Navigate} from 'react-router-dom';
-// import {AuthContext} from '../firebase/Auth';
-import { AuthContext } from '../firebase/Auth';
-// import {
-//   doSignInWithEmailAndPassword,
-//   doPasswordReset
-// } from '../firebase/FirebaseFunctions';
-import doSignInWithEmailAndPassword from '../firebase/FirebaseFunctions'
+
+import { AuthContext } from '../context/AuthContext';
+import {doPasswordReset, doSignInWithEmailAndPassword} from '../firebase/FirebaseFunctions'
+
 function SignIn() {
   const {currentUser} = useContext(AuthContext);
   const handleLogin = async (event) => {
