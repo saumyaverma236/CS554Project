@@ -1,15 +1,21 @@
+import "../src/App.css"
 import React from 'react';
-import '../App.css';
 import {Route, Routes} from 'react-router-dom';
 import SignIn from './components/SignIn'
 import SignUp from './components/SignUp'
 import Landing from './components/Landing'
 import Navigation from './components/Navigation'
 import Dashboard from './components/Dashboard'
-import {AuthProvider} from '../context/AuthContext';
+// import {AuthProvider} from '../context/AuthContext';
+import  {AuthProvider}  from "./firebase/Auth";
 
 function App() {
   return (
+    // <>
+
+    // HELLO
+    // </>
+   
     <AuthProvider>
       <div className='App'>
         <header className='App-header card'>
