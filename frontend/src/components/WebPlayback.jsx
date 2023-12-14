@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import SearchModal from './search/SearchModal';
 
 const track = {
 	name: "",
@@ -19,6 +20,8 @@ function WebPlayback(props) {
 	const [player, setPlayer] = useState(undefined);
 	const [current_track, setTrack] = useState(track);
 	const deviceID = useRef(null);
+
+	const [showSearchModal, setShowSearchModal] = useState(false);
 
 	useEffect(() => {
 
@@ -69,6 +72,10 @@ function WebPlayback(props) {
 		};
 	}, []);
 
+	const handleCloseModals = () => {
+		setShowSearchModal(false);
+	}
+
 	if (!is_active) {
 		return (
 			<>
@@ -76,6 +83,19 @@ function WebPlayback(props) {
 					<div className="main-wrapper">
 						<b> Instance not active. Transfer your playback using your Spotify app </b>
 					</div>
+
+					<div>
+						<button onClick={() => { setShowSearchModal(true); }}>
+							Search for Songs
+						</button>
+					</div>
+
+					{showSearchModal && (
+						<SearchModal 
+							isOpen={showSearchModal}
+							handleClose={handleCloseModals}
+						/>
+					)}
 				</div>
 			</>)
 	} else {
@@ -102,6 +122,19 @@ function WebPlayback(props) {
 								&gt;&gt;
 							</button>
 						</div>
+
+						<div>
+							<button onClick={() => { setShowSearchModal(true); }}>
+								Search for Songs
+							</button>
+						</div>
+
+						{showSearchModal && (
+							<SearchModal 
+								isOpen={showSearchModal}
+								handleClose={handleCloseModals}
+							/>
+						)}
 					</div>
 				</div>
 			</>
