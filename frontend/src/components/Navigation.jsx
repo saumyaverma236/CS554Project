@@ -1,6 +1,6 @@
 import React, {useContext} from 'react';
 import {NavLink} from 'react-router-dom';
-import {AuthContext} from '../context/AuthContext';
+import {AuthContext} from '../firebase/Auth';
 import SignOutButton from './SignOut';
 import '../App.css';
 

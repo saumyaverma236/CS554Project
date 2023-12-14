@@ -49,7 +49,7 @@ async function doSignOut() {
   await signOut(auth);
 }
 
-export {
+export default {
   doCreateUserWithEmailAndPassword,
   doSocialSignIn,
   doSignInWithEmailAndPassword,

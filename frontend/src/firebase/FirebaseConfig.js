@@ -1,7 +1,7 @@
 // TODO: Replace the following with your app's Firebase project configuration
 // See: https://firebase.google.com/docs/web/learn-more#config-object
 
-export default {
+export default   firebaseApp = {
   apiKey: "AIzaSyAUY_Kyk4el8ojd4OK_Vf27X3OgvOVQk74",
   authDomain: "cs-554-ab9fe.firebaseapp.com",
   projectId: "cs-554-ab9fe",
