@@ -1,19 +1,30 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-
-import "@weavy/uikit-react/dist/css/weavy.css";
-import WeavyApp from './components/WeavyApp';
+import "../src/App.css"
+import React from 'react';
+import {Route, Routes} from 'react-router-dom';
+import SignIn from './components/SignIn'
+import SignUp from './components/SignUp'
+import Landing from './components/Landing'
+import Navigation from './components/Navigation'
+import Dashboard from './components/Dashboard'
+import {AuthProvider} from './context/AuthContext';
 
 
 function App() {
-
   return (
-    <>
-    <h1>Welcome to Music Mates</h1>
-    </>
-  )
+    <AuthProvider>
+      <div className='App'>
+        <header className='App-header card'>
+          <Navigation />
+        </header>
+        <Routes>
+          <Route path='/' element={<Landing />} />
+          <Route path='/dashboard' element={<Dashboard />} />
+          <Route path='/signin' element={<SignIn />} />
+          <Route path='/signup' element={<SignUp />} />
+        </Routes>
+      </div>
+    </AuthProvider>
+  );
 }
 
-export default App
+export default App;
