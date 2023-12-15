@@ -21,6 +21,7 @@ function WebPlayback(props) {
 	const [is_active, setActive] = useState(false);
 	const [player, setPlayer] = useState(undefined);
 	const [current_track, setTrack] = useState(track);
+	const [queue, setQueue] = useState([]);
 	const deviceID = useRef(null);
 
 	const [showSearchModal, setShowSearchModal] = useState(false);
@@ -59,6 +60,7 @@ function WebPlayback(props) {
 				}
 
 				setTrack(state.track_window.current_track);
+				setQueue(state.track_window.next_tracks.slice(0, 5));
 				setPaused(state.paused);
 
 
@@ -126,6 +128,19 @@ function WebPlayback(props) {
 								<button className="btn-spotify" onClick={() => { player.nextTrack() }} >
 									&gt;&gt;
 								</button>
+							</div>
+
+							<div className='queued_songs_list'>
+								<h4>Queued Songs</h4>
+								{queue.map(track => {
+									return (
+										<div key={track.uri}>
+											<img src={track.album.images[1].url}/>
+											<div className="queue__name">{track.name}</div>
+											<div className="queue__artist">{track.artists[0].name}</div>
+										</div>
+									)
+								})}
 							</div>
 
 							<div>
