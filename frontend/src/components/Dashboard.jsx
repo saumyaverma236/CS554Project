@@ -13,10 +13,10 @@ function Dashboard() {
       );
       console.log('data', data);
 
-      const redirectUri = encodeURIComponent('http://localhost:5173/dashboard');
-      const spotifyAuthUrl = `${data}&redirect_uri=${redirectUri}`;
+      // const redirectUri = encodeURIComponent('http://localhost:5173/dashboard');
+      // const spotifyAuthUrl = `${data}&redirect_uri=${redirectUri}`;
 
-      window.location.href = spotifyAuthUrl;
+      window.location.href = data;
 
       setLoading(false);
     } catch (e) {
