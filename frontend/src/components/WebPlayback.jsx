@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import SearchModal from './search/SearchModal';
 
 import DeviceContext from '../context/DeviceContext';
+import axios from 'axios';
 
 const track = {
 	name: "",
@@ -47,6 +48,7 @@ function WebPlayback(props) {
 			player.addListener('ready', ({ device_id }) => {
 				console.log('Ready with Device ID', device_id);
 				deviceID.current = device_id;
+				fetchData(device_id);
 			});
 
 			player.addListener('not_ready', ({ device_id }) => {
@@ -74,7 +76,39 @@ function WebPlayback(props) {
 			player.connect();
 
 		};
+
+
 	}, []);
+
+	// API Call to get Playback State 
+	// SetInterval to retrieve state every x seconds
+
+	// const getPlaybackState = async () => {
+	// 	try {
+	// 		const { data } = await axios.get('/api/playback-state');
+
+	// 		console.log(data);
+	// 	} catch (error) {
+	// 		console.log(error);
+	// 	}
+	// };
+
+	// setInterval(() => {
+	// 	console.log('Getting Playback State');
+	// 	getPlaybackState();
+	// }, 60000);
+	
+	const fetchData = async (deviceId) => {
+		try {
+			const { data } = await axios.post('/api/transfer-playback', {
+				deviceId: deviceId
+			});
+
+			console.log(data);
+		} catch (error) {
+			console.log(error)
+		}
+	}
 
 	const handleCloseModals = () => {
 		setShowSearchModal(false);
