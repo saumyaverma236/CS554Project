@@ -33,7 +33,7 @@ function Dashboard() {
     const urlSearchParams = new URLSearchParams(window.location.search);
     const urlAccessToken = urlSearchParams.get('access_token');
     setAccessToken(urlAccessToken);
-  }, []); // Run this only on mount to initialize the state
+  }, []); 
 
   useEffect(() => {
     if (accessToken) {
