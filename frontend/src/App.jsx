@@ -7,6 +7,7 @@ import Landing from './components/Landing'
 import Navigation from './components/Navigation'
 import Dashboard from './components/Dashboard'
 import {AuthProvider} from './context/AuthContext';
+import RoomDetail from "./components/RoomDetail";
 
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
           <Route path='/dashboard' element={<Dashboard />} />
           <Route path='/signin' element={<SignIn />} />
           <Route path='/signup' element={<SignUp />} />
+          <Route path='/rooms/:id' element={<RoomDetail />} />
         </Routes>
       </div>
     </AuthProvider>
