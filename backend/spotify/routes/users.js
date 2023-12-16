@@ -98,7 +98,7 @@ router.get('/callback', async (req, res) => {
         req.session.user.access_token = access_token;
         req.session.user.refresh_token = refresh_token;
 
-        console.log(access_token);
+        console.log(req.session);
 
         return res.redirect(`http://localhost:5173/dashboard?access_token=${access_token}`);
    
@@ -152,5 +152,36 @@ router.get('/dashboard', (req, res) => {
   }
 });
 
+// router.get('/logout', async (req, res) => {
+//   try {
+//     const refresh_token = req.session.user?.access_token;
+//     console.log("logout route", req.session)
+
+//     if (!refresh_token) {
+//       return res.status(400).json({ message: 'User not authenticated' });
+//     }
+
+//     const response = await axios.post('https://accounts.spotify.com/api/token/revoke', null, {
+//       params: {
+//         token: refresh_token,
+//         token_type_hint: 'refresh_token',
+//         client_id: CLIENT_ID,
+//         client_secret: CLIENT_SECRET,
+//       },
+//     });
+//     console.log(response)
+
+//     req.session.destroy((err) => {
+//       if (err) {
+//         console.error('Error destroying session:', err);
+//       }
+//     });
+
+//     res.status(200).json({ message: 'Logout successful' });
+//   } catch (error) {
+//     console.error('Logout error:', error);
+//     res.status(500).json({ message: 'Internal server error' });
+//   }
+// });
 
 export default router;
