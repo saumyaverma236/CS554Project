@@ -142,7 +142,7 @@ router.route('/api/playback-state')
 	const SET_PLAYBACK_STATE_URL = BASE_URL + `/me/player/seek?position_ms=${time}`;
 
 	try {
-		const { data } = await axios.put(BASE_URL, undefined, {
+		const { data } = await axios.put(SET_PLAYBACK_STATE_URL, undefined, {
 			headers: {
 				'Authorization': 'Bearer ' + access_token
 			}
