@@ -21,7 +21,7 @@ function Dashboard() {
 
   const spotifyLogout = async () => {
     try {
-      const { data } = await axios.get('http://localhost:3000/users/logout');
+      // const { data } = await axios.get('http://localhost:3000/users/logout');
       setAccessToken(undefined);
       window.localStorage.removeItem('access_token');
     } catch (e) {
