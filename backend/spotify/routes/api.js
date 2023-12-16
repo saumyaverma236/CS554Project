@@ -111,8 +111,7 @@ router.post('/api/transfer-playback', async (req, res) => {
 	}
 });
 
-router.route('/api/playback-state')
-    .get('/api/playback-state', async (req, res) => {
+router.get('/api/playback-state', async (req, res) => {
 	console.log('In API Call: Get Playback State');
 
     const access_token = req.session.user.access_token;
