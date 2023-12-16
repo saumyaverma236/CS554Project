@@ -40,3 +40,45 @@
 .read-the-docs {
   color: #888;
 }
+
+.dashboard {
+  color: white;
+  background-color: #1a1a1a;
+  text-align: center;
+  padding: 20px;
+}
+/*
+
+h1 {
+  font-size: 2em;
+  Add more styling to match the design
+}
+
+h2 {
+  font-size: 1.5em;
+  
+}
+
+.room-code-input {
+  margin: 20px 0;
+  
+}
+
+.room-code-input input {
+  margin-right: 10px;
+  
+}
+
+button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  
+}
+
+.create-room-button {
+  /* Additional styling for the create room button if different from the join button 
+}
+ */
