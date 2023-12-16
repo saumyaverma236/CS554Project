@@ -22,3 +22,4 @@ export const mobo = getCollectionFn('mobo');
 export const psu = getCollectionFn('psu');
 export const ram = getCollectionFn('ram');
 export const disk = getCollectionFn('disk');
+export const rooms = getCollectionFn('rooms')
