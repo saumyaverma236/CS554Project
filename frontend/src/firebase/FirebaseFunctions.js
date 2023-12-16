@@ -34,10 +34,17 @@ async function doSignInWithEmailAndPassword(email, password) {
 }
 
 async function doSocialSignIn() {
-  let auth = getAuth();
-  let socialProvider = new GoogleAuthProvider();
-  await signInWithPopup(auth, socialProvider);
+  const auth = getAuth();
+  const socialProvider = new GoogleAuthProvider();
+
+  try {
+    const { user } = await signInWithPopup(auth, socialProvider);
+    localStorage.setItem('user', JSON.stringify(user));
+  } catch (error) {
+    alert(error.message);
+  }
 }
+
 
 async function doPasswordReset(email) {
   let auth = getAuth();

@@ -43,6 +43,7 @@ app.use(cors())
       secret: 'Secret!',
       resave: false,
       saveUninitialized: false,
+      
    }));
 
 app.set('views', path.join(__dirname, 'spotify/views'));
