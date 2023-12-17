@@ -289,8 +289,8 @@ router.get('/callback', async (req, res) => {
 
         console.log(req.session);
 
-        // return res.redirect(`http://localhost:5173/dashboard?access_token=${access_token}`);
-        res.redirect('/users/dashboard');
+        return res.redirect(`http://localhost:5173/dashboard?access_token=${access_token}`);
+        // res.redirect('/users/dashboard');
    
       } else {
         res.redirect('/#' + querystring.stringify({ error: 'invalid_token' }));
