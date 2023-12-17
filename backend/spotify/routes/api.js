@@ -7,7 +7,7 @@ const BASE_URL = 'https://api.spotify.com/v1';
 // Getting Spotify Playback State
 // Permission Needed: user-read-playback-state
 // TODO: Change this to GET (make sure fetch call method is GET too)
-router.post('/api/search', async (req, res) => {
+router.post('/search', async (req, res) => {
 
 	console.log('In API call: Search');
 
@@ -63,7 +63,7 @@ router.post('/api/search', async (req, res) => {
 
 });
 
-router.post('/api/add-track', async (req, res) => {
+router.post('/add-track', async (req, res) => {
 	console.log('In API Call: Add Track');
 
 	const { trackUri, deviceId } = req.body;
@@ -86,7 +86,7 @@ router.post('/api/add-track', async (req, res) => {
 
 });
 
-router.post('/api/transfer-playback', async (req, res) => {
+router.post('/transfer-playback', async (req, res) => {
 	console.log('In API Call: Transfer Playback');
 
 	const { deviceId } = req.body;
@@ -111,7 +111,7 @@ router.post('/api/transfer-playback', async (req, res) => {
 	}
 });
 
-router.get('/api/playback-state', async (req, res) => {
+router.get('/playback-state', async (req, res) => {
 	console.log('In API Call: Get Playback State');
 
     const access_token = req.session.user.access_token;
@@ -131,7 +131,7 @@ router.get('/api/playback-state', async (req, res) => {
 		console.log(error.response);
 	}
 })   
-    .post('/api/playback-state', async (req, res) => {
+    .post('/playback-state', async (req, res) => {
 	console.log('In API Call: Set Playback State');
 
 	const { time } = req.body;
