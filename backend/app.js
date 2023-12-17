@@ -87,6 +87,7 @@ import session from 'express-session';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import configRoutes from './spotify/routes/index.js';
+import configRoutes2 from './routes/index.js';
 
 import { fileURLToPath } from 'url';
 import path from 'path';
@@ -160,6 +161,7 @@ app.engine('handlebars', exphbs.engine({
 
 
 configRoutes(app);
+configRoutes2(app);
 app.listen(3000, () => {
       console.log("We've now got a server!");
       console.log('Your routes will be running on http://localhost:3000');

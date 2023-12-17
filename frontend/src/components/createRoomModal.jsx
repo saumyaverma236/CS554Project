@@ -42,11 +42,17 @@ import '../CreateRoomModal.css'; // Assuming you have your styles in this CSS fi
 
 import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
+import axios from 'axios';
 
 function CreateRoomModal(props) {
     const navigate = useNavigate();
-  const [roomName, setRoomName] = useState("");
+    
+  const [roomName, setRoomName] = useState(`${props.currentUser.displayName}'s Room`);
   const [isPublic, setIsPublic] = useState(true);
+
+  
+  
 
   function handleRoomNameChange(event) {
     setRoomName(event.target.value);
@@ -56,13 +62,31 @@ function CreateRoomModal(props) {
     setIsPublic(visibility === "public");
   }
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
     // Handle the creation logic here, possibly involving a backend service
     console.log(`Room Name: ${roomName}, Public: ${isPublic}`);
-    let roomId = 'abcdefghijk'
+    
+    
+    
+    try {
+        const response = await axios.post('http://localhost:3000/rooms', {
+            title: roomName, adminID: props.currentUser.uid, isPrivate: !isPublic
+    });
+    const createdRoom = response.data;
+    console.log('created room')
+    console.log(createdRoom)
+
+    let roomId = createdRoom._id
     navigate(`/rooms/${roomId}`);
     props.onClose(); // Close the modal
+
+
+
+    } catch (error) {
+        console.log(error)
+        alert(error)
+    }
     
   }
 
