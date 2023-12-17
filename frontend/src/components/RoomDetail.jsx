@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import '../RoomDetail.css'; // Your CSS file for styling
+import WebPlayback from './WebPlayback';
 
 const RoomDetail = () => {
   const [messages, setMessages] = useState([]); // Placeholder for chat messages
@@ -21,7 +22,9 @@ const RoomDetail = () => {
         {/* Other controls */}
       </div>
       <div className="music-player">
-        {/* Music Player UI */}
+        <div>
+        <WebPlayback token={ window.localStorage.getItem('access_token') } />
+        </div>
       </div>
       <div className="chat-box">
         <div className="messages">

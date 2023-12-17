@@ -220,7 +220,8 @@ router
       res.cookie(stateKey, state);
   
       // your application requests authorization
-      const scope = 'user-read-private user-read-email user-top-read user-read-recently-played';
+      const scope = "streaming user-read-email user-read-private user-read-playback-state user-modify-playback-state";
+
       return res.json(
         'https://accounts.spotify.com/authorize?' + querystring.stringify({
           response_type: 'code',
@@ -335,7 +336,9 @@ router.get('/dashboard', (req, res) => {
   if (req.session.user && req.session.user.access_token) {
     console.log(req.session.user)
     // If there is a user session and an access token, assume connection is successful
-    return res.status(200).json('Successfully connected to Spotify');
+    return res.redirect(`http://localhost:5173/dashboard?access_token=${req.session.user.access_token}`);
+
+    //return res.status(200).json('Successfully connected to Spotify');
   } else {
     // If there is no user session or access token, redirect to login or home
     res.redirect("/");
