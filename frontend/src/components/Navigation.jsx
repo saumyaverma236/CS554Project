@@ -6,7 +6,7 @@ import '../App.css';
 
 const Navigation = () => {
   const {currentUser} = useContext(AuthContext);
-  return <div>{currentUser ? <NavigationAuth /> : <NavigationNonAuth />}</div>;
+  return <div>{currentUser ? <NavigationNonAuth /> : <NavigationNonAuth />}</div>;
 };
 
 const NavigationAuth = () => {

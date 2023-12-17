@@ -5,6 +5,22 @@ import { users } from "../config/mongoCollection.js";
 import * as userData from '../data/users.js'
 import bcryptjs from 'bcryptjs';
 import xss from 'xss';
+router.post("/signUpUser", async (req,res) => {
+        try{
+            console.log("sign up route")
+            let details = req.body;
+            let name = details.name;
+            let email = details.email;
+            let password = details.password;
+            const addedUser = await userData.signUpUser(name, email, password)
+            console.log(addedUser)
+            return res.status(200).json(addedUser);
+        }
+        catch (e) {
+            res.status(500).json({ error: e });
+          }
+    }
+    )
 
 router.post("/signup", async (req, res) => {
     let input = req.body;

@@ -1,8 +1,42 @@
 import { users } from "../config/mongoCollection.js";
-
+import bcrypt from "bcrypt";
+import validator from '../validation.js';
 
 import { ObjectId } from "mongodb";
 
+const signUpUser = async (name, email, password) => {
+    console.log("signupuser")
+    // name = validator.validName(name, 'Name');
+    // email = validator.checkString(email, 'Email');
+    // email = validator.validateEmailId(email);
+    // password = validator.checkString(password, 'Password');
+    // password = validator.validPassword(password);
+    // confirmPassword = validator.checkString(confirmPassword, 'Confirm Password')
+    // confirmPassword = validator.validPassword(confirmPassword);
+
+    const salt = await bcrypt.genSalt(10);
+    const passwords = await bcrypt.hash(password, salt);
+    // const confirmPasswords = await bcrypt.hash(confirmPassword, salt);
+    
+    // if (password !== confirmPassword) {
+    //   throw 'Password and Confirm password should match'
+    // }
+
+    const userCollection = await users();
+
+    // const user = await userCollection.findOne({email: email})
+    // if(user){
+    //   throw `You are already registered. Please login to MusicMates.`
+    // }
+    let info = {
+      name: name,
+      email: email,
+      password:passwords
+    };
+
+    const insertInfo = await userCollection.insertOne(info);
+    return insertInfo
+  };
 
 
 const createUser = async (name, email) => {
@@ -71,6 +105,7 @@ const getUserByEmail = async (email) => {
 };
 
 export{
+    signUpUser,
     createUser,
     getAllUsers,
     getUserById,

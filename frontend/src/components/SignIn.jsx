@@ -1,7 +1,8 @@
 import React, {useContext} from 'react';
 import SocialSignIn from './SocialSignIn';
 import {Navigate} from 'react-router-dom';
-
+import { Link } from 'react-router-dom';
+import Button from '@mui/material/Button';
 import { AuthContext } from '../context/AuthContext';
 import {doPasswordReset, doSignInWithEmailAndPassword} from '../firebase/FirebaseFunctions'
 
@@ -36,13 +37,14 @@ function SignIn() {
   return (
     <div>
       <div className='card'>
-        <h1>Log-In</h1>
+        <h1>Login to MusicMates</h1>
         <form className='form' onSubmit={handleLogin}>
           <div className='form-group'>
             <label>
               Email Address:
               <br />
               <input
+                className='form-control'
                 name='email'
                 id='email'
                 type='email'
@@ -58,6 +60,7 @@ function SignIn() {
               Password:
               <br />
               <input
+                className='form-control'
                 name='password'
                 type='password'
                 placeholder='Password'
@@ -67,14 +70,20 @@ function SignIn() {
             </label>
           </div>
 
-          <button className='button' type='submit'>
+          <Button className='button' type='submit'>
             Log in
-          </button>
+          </Button>
 
-          <button className='forgotPassword' onClick={passwordReset}>
+          <Button className='forgotPassword' onClick={passwordReset}>
             Forgot Password
-          </button>
+          </Button>
+          <Link to='/signup'>
+          <Button variant='contained' color='secondary' type='button'>
+            Not a Member? Sign Up
+          </Button>
+        </Link>
         </form>
+        
 
         <br />
         <SocialSignIn />
