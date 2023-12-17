@@ -24,11 +24,27 @@ function Dashboard() {
     setRoomCode(event.target.value);
   };
 
-  const handleJoinRoom = () => {
+  const handleJoinRoom = async () => {
     // Implement the logic to join the room using the room code
     console.log('go to room detail')
-    let roomId = 'abcdefghijk'
-    navigate(`/rooms/${roomId}`);
+    
+
+    try {
+      const response = await axios.get(`http://localhost:3000/rooms/${roomCode}`);
+  const room = response.data;
+  console.log('room is::::')
+  console.log(room)
+
+  
+  navigate(`/rooms/${roomCode}`);
+  
+
+
+
+  } catch (error) {
+      console.log(error)
+      alert(error)
+  }
     
   };
 
@@ -77,7 +93,7 @@ function Dashboard() {
       <h2>Welcome back, {currentUser && currentUser.displayName}!</h2>
       <p>It's great to see you again.</p>
       <button className="create-room-button" onClick={handleCreateRoom}>Create Room</button>
-      <CreateRoomModal isOpen={isModalOpen} onClose={handleModalClose} />
+      <CreateRoomModal currentUser={currentUser} isOpen={isModalOpen} onClose={handleModalClose} />
       <div className="room-code-input">
         <label>Have a room code? Join a room with it:</label>
         <input type="text" value={roomCode} onChange={handleRoomCodeChange} />

@@ -18,6 +18,8 @@
 
 import userRoutes from './users.js';
 import apiRoutes from './api.js';
+import roomRoutes from './rooms.js'
+import { application } from 'express';
 
 const constructorMethod = (app) => {
     app.get('/', (req, res) => {
@@ -26,6 +28,7 @@ const constructorMethod = (app) => {
     });
     app.use('/users', userRoutes);
     app.use('/api', apiRoutes);
+    app.use('/rooms',roomRoutes)
 
    //  app.use('*', (req, res) => {
    //      res.status(404).render('pages/error', {title: 'Error', error: 'Route not found'});

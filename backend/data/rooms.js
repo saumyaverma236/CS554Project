@@ -1,4 +1,4 @@
-import {rooms} from '../config/mongoCollections.js';
+import { rooms } from '../config/mongoCollection.js';
 // import userData from './users.js';
 import {ObjectId} from 'mongodb';
 import validation from '../validation.js';
@@ -11,7 +11,7 @@ const exportedMethods = {
   },
 
   async getRoomById(id) {
-    id = validation.checkId(id);
+    // id = validation.checkId(id);
     const roomCollection = await rooms();
     const room = await roomCollection.findOne({_id: new ObjectId(id)});
     if (!room) throw 'Error: Room not found';
@@ -24,12 +24,13 @@ const exportedMethods = {
 //     return await postCollection.find({tags: tag}).toArray();
 //   },
   async addRoom(title, adminID, isPrivate) {
+    console.log('insideeee room yo')
     title = validation.checkString(title, 'Title');
-    adminID = validation.checkId(adminID, 'Admin ID');
+    // adminID = validation.checkId(adminID, 'Admin ID');
 
-    userThatCreatedRoom = 'Get current logged in user id'
-    //const userThatCreatedRoom = await userData.getUserById(adminID);
-    if (!userThatCreatedRoom) throw 'User for room not found';
+    // userThatCreatedRoom = 'Get current logged in user id'
+    // //const userThatCreatedRoom = await userData.getUserById(adminID);
+    // if (!userThatCreatedRoom) throw 'User for room not found';
 
     const newRoom = {
       title: title,
@@ -37,13 +38,15 @@ const exportedMethods = {
       adminID: adminID,
       memberIDs: []
     };
+
+    console.log(newRoom)
     const roomCollection = await rooms();
     const newInsertInformation = await roomCollection.insertOne(newRoom);
     const newId = newInsertInformation.insertedId;
     return await this.getRoomById(newId.toString());
   },
   async removeRoom(id) {
-    id = validation.checkId(id);
+    // id = validation.checkId(id);
     const roomCollection = await rooms();
     const deletionInfo = await roomCollection.findOneAndDelete({
       _id: new ObjectId(id)
