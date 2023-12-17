@@ -164,6 +164,12 @@ function WebPlayback(props) {
 								</button>
 							</div>
 
+                            <div>
+								<button onClick={() => { setShowSearchModal(true); }}>
+									Search for Songs
+								</button>
+							</div>
+
 							<div className='queued_songs_list'>
 								<h4>Queued Songs</h4>
 								{queue.map(track => {
@@ -175,12 +181,6 @@ function WebPlayback(props) {
 										</div>
 									)
 								})}
-							</div>
-
-							<div>
-								<button onClick={() => { setShowSearchModal(true); }}>
-									Search for Songs
-								</button>
 							</div>
 
 							{showSearchModal && (
