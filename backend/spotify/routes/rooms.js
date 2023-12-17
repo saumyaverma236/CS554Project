@@ -1,11 +1,12 @@
 import {Router} from 'express';
 const router = Router();
-import {roomData} from '../data/index.js';
-import validation from '../validation.js';
+import { roomData } from '../../data/index.js';
+import validation from '../../validation.js';
 
 router
   .route('/')
   .get(async (req, res) => {
+    console.log('into get route')
     try {
       const roomList = await roomData.getAllRooms();
       return res.json(roomList);
@@ -14,32 +15,37 @@ router
     }
   })
   .post(async (req, res) => {
-    const roomData = req.body;
+    console.log('into post routeeeeeeee')
+    const roomDataBody = req.body;
     //make sure there is something present in the req.body
-    if (!roomData || Object.keys(roomData).length === 0) {
+    if (!roomDataBody || Object.keys(roomDataBody).length === 0) {
       return res
         .status(400)
         .json({error: 'There are no fields in the request body'});
     }
     //check all inputs, that should respond with a 400
     try {
-        roomData.title = validation.checkString(roomData.title, 'Title');
+        roomDataBody.title = validation.checkString(roomDataBody.title, 'Title');
         
-        roomData.adminID = validation.checkId(
-            roomData.adminID,
-        'Admin ID'
-      );
+    //     roomData.adminID = validation.checkId(
+    //         roomData.adminID,
+    //     'Admin ID'
+    //   );
       
     } catch (e) {
+        console.log(e)
+        console.log('inside error block')
       return res.status(400).json({error: e});
     }
 
     //insert the room
     try {
-      const {title, adminID, isPrivate, memberIDs} = roomData;
-      const newRoom = await roomData.addRoom(title,adminID,isPrivate,memberIDs)
+      const {title, adminID, isPrivate} = roomDataBody;
+      const newRoom = await roomData.addRoom(title,adminID,isPrivate)
       return res.json(newRoom);
     } catch (e) {
+        console.log(e)
+        console.log('error state being here')
       return res.status(500).json({error: e});
     }
   });
@@ -49,7 +55,7 @@ router
   .get(async (req, res) => {
     //check inputs that produce 400 status
     try {
-      req.params.id = validation.checkId(req.params.id, 'Id URL Param');
+    //   req.params.id = validation.checkId(req.params.id, 'Id URL Param');
     } catch (e) {
       return res.status(400).json({error: e});
     }
@@ -144,7 +150,7 @@ router
   .delete(async (req, res) => {
     //check the id
     try {
-      req.params.id = validation.checkId(req.params.id, 'Id URL Param');
+    //   req.params.id = validation.checkId(req.params.id, 'Id URL Param');
     } catch (e) {
       return res.status(400).json({error: e});
     }
