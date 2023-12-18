@@ -2,7 +2,7 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "MusicMates: Sync and share your music in real-time with friends, creating collaborative playlists and democratically controlling the vibe with a group voting feature. Join a room, queue songs, and enjoy a unified listening experience with those around you!",
-  "main": "index.js",
+  "main": "app.js",
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
