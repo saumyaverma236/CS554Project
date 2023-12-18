@@ -6,6 +6,8 @@ import { AuthContext } from '../context/AuthContext';
 import '../App.css';
 import CreateRoomModal from './createRoomModal';
 import axios from 'axios';
+import SignOut from './SignOut'; 
+
 
 function Dashboard() {
   const [isModalOpen, setModalOpen] = useState(false);
@@ -67,9 +69,10 @@ function Dashboard() {
 
   const spotifyLogout = async () => {
     try {
-      // const { data } = await axios.get('http://localhost:3000/users/logout');
-      setAccessToken(undefined);
+      const { data } = await axios.get('http://localhost:3000/usersData/logout');
+      //setAccessToken(undefined);
       window.localStorage.removeItem('access_token');
+      window.location.removeItem('user');
     } catch (e) {
       console.error(e);
     }
@@ -107,13 +110,13 @@ function Dashboard() {
       <h2>
         Hello {currentUser && currentUser.displayName}, this is the Protected Home page
       </h2>
-      {!accessToken && (
+      {/* {!accessToken && (
         <img
           onClick={() => spotifySignOn()}
           alt='spotify signin'
           src='/imgs/btn_spotify_signin.png'
         />
-      )}
+      )} */}
       {accessToken && (
         <>
           <h5>You're Logged into Spotify. Wanna Logout? Click Below</h5>
@@ -124,6 +127,7 @@ function Dashboard() {
           />
         </>
       )}
+      <SignOut />
     </div>
   );
 }
