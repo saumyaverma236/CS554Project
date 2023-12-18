@@ -35,7 +35,19 @@ const exportedMethods = {
     }
 
     return arr;
-  }
+  },
+
+  validName(name, varName) {
+    name = name.trim();
+    let nameValid = /^[a-zA-Z]/; // Regular expression to match valid firstName
+    if (!nameValid.test(name)) {
+      throw `Invalid ${varName} name.`;
+    }
+    if (name.length < 2 || name.length > 25)
+      throw `name should be in length between 2 to 25.`;
+    return name;
+  },
+
 };
 
 export default exportedMethods;
