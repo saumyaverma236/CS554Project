@@ -48,7 +48,10 @@ import axios from 'axios';
 function CreateRoomModal(props) {
     const navigate = useNavigate();
     
-  const [roomName, setRoomName] = useState(`${props.currentUser.displayName}'s Room`);
+    const [roomName, setRoomName] = useState(
+      props.currentUser ? `${props.currentUser.displayName}'s Room` : "New Room"
+    );
+    
   const [isPublic, setIsPublic] = useState(true);
 
   
@@ -90,7 +93,8 @@ function CreateRoomModal(props) {
     
   }
 
-  if (!props.isOpen) return null;
+  if (!props.isOpen || !props.currentUser) return null;
+
 
   return (
     <div className="modal">

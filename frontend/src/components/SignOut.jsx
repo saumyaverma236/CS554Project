@@ -11,8 +11,9 @@
       try {
         await doSignOut();
         console.log("coming back");
-        await axios.post('http://localhost:3000/usersData/logout');
-        navigate('/signin');
+        await axios.get('http://localhost:3000/usersData/logout');
+         navigate('/signin');
+        // <Navigate to='/signin' />
       } catch (error) {
         console.error("Error signing out:", error);
       }

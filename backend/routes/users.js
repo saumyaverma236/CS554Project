@@ -57,7 +57,7 @@ router.get('/logout', async (req, res) => {
     if (req.session) {
         req.session.destroy((err) => {
             if (err) {
-                // handle error case here
+                
                 res.status(500).send('Error while logging out');
             } else {
                 res.send('Logged out');
