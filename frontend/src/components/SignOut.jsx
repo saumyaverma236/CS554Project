@@ -1,12 +1,27 @@
-import React from 'react';
-import {doSignOut} from '../firebase/FirebaseFunctions';
+  import React from 'react';
+  import { useNavigate } from 'react-router-dom';
+  import { doSignOut } from '../firebase/FirebaseFunctions';
+  import Button from '@mui/material/Button';
 
-const SignOutButton = () => {
-  return (
-    <button className='button' type='button' onClick={doSignOut}>
-      Sign Out
-    </button>
-  );
-};
+  const SignOut = () => {
+    const navigate = useNavigate();
 
-export default SignOutButton;
+    const handleSignOut = async () => {
+      try {
+        await doSignOut();
+        console.log("coming back");
+        navigate('/signin');
+      } catch (error) {
+        console.error("Error signing out:", error);
+      }
+    };
+
+    return (
+      <Button className='button' type='button' onClick={handleSignOut}>
+        Sign Out
+      </Button>
+    );
+  };
+
+  export default SignOut;
+
