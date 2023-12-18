@@ -1,10 +1,11 @@
 FROM node:20
 
-WORKDIR /backend 
+WORKDIR /backend
 
 COPY . .
 
 RUN npm install
+
 
 EXPOSE 3000
 
