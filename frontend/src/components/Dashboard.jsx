@@ -1,11 +1,11 @@
+
 import React, { useState, useContext, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import { AuthContext } from '../context/AuthContext';
 import '../App.css';
 import CreateRoomModal from './createRoomModal';
 import axios from 'axios';
-import SignOutButton from './SignOut';
 
 function Dashboard() {
   const [isModalOpen, setModalOpen] = useState(false);
@@ -26,26 +26,34 @@ function Dashboard() {
 
   const handleJoinRoom = async () => {
     // Implement the logic to join the room using the room code
-    console.log('go to room detail');
+    console.log('go to room detail')
+    
 
     try {
       const response = await axios.get(`http://localhost:3000/rooms/${roomCode}`);
-      const room = response.data;
-      console.log('room is::::');
-      console.log(room);
+  const room = response.data;
+  console.log('room is::::')
+  console.log(room)
 
-      navigate(`/rooms/${roomCode}`);
-    } catch (error) {
-      console.log(error);
-      alert(error);
-    }
+  
+  navigate(`/rooms/${roomCode}`);
+  
+
+
+
+  } catch (error) {
+      console.log(error)
+      alert(error)
+  }
+    
   };
 
   const handleCreateRoom = () => {
     // Implement the logic to create a new room
-    console.log('create room button tapped');
+    console.log('create room button tapped')
     setModalOpen(true);
   };
+
 
   const spotifySignOn = async () => {
     try {
@@ -62,7 +70,6 @@ function Dashboard() {
       // const { data } = await axios.get('http://localhost:3000/users/logout');
       setAccessToken(undefined);
       window.localStorage.removeItem('access_token');
-      navigate('/signin');
     } catch (e) {
       console.error(e);
     }
@@ -76,7 +83,7 @@ function Dashboard() {
     if (!urlAccessToken) {
       spotifySignOn();
     }
-  }, []);
+  }, []); 
 
   useEffect(() => {
     if (accessToken) {
@@ -86,22 +93,28 @@ function Dashboard() {
 
   return (
     <div className='card'>
-      {currentUser && (
-        <>
-          <h1>Music Mates</h1>
-          <h2>Welcome back, {currentUser.displayName}!</h2>
-          <p>It's great to see you again.</p>
-          <Button className="create-room-button" onClick={handleCreateRoom}>
-            Create Room
-          </Button>
-          <CreateRoomModal currentUser={currentUser} isOpen={isModalOpen} onClose={handleModalClose} />
-          <div className="room-code-input">
-            <label>Have a room code? Join a room with it:</label>
-            <input type="text" value={roomCode} onChange={handleRoomCodeChange} />
-            <Button onClick={handleJoinRoom}>Join</Button>
-          </div>
-          <h2>Hello {currentUser.displayName}, this is the Protected Home page</h2>
-          {accessToken && (
+      <h1>Music Mates</h1>
+      <h2>Welcome back, {currentUser && currentUser.displayName}!</h2>
+      <p>It's great to see you again.</p>
+      <Button className="create-room-button" onClick={handleCreateRoom}>Create Room</Button>
+      <CreateRoomModal currentUser={currentUser} isOpen={isModalOpen} onClose={handleModalClose} />
+      <div className="room-code-input">
+        <label>Have a room code? Join a room with it:</label>
+        <input type="text" value={roomCode} onChange={handleRoomCodeChange} />
+        <Button onClick={handleJoinRoom}>Join</Button>
+      </div>
+      
+      <h2>
+        Hello {currentUser && currentUser.displayName}, this is the Protected Home page
+      </h2>
+      {!accessToken && (
+        <img
+          onClick={() => spotifySignOn()}
+          alt='spotify signin'
+          src='/imgs/btn_spotify_signin.png'
+        />
+      )}
+      {accessToken && (
         <>
           <h5>You're Logged into Spotify. Wanna Logout? Click Below</h5>
           <img
@@ -111,19 +124,6 @@ function Dashboard() {
           />
         </>
       )}
-        </>
-      )}
-
-      {!accessToken && (
-        <img
-          onClick={() => spotifySignOn()}
-          alt='spotify signin'
-          src='/imgs/btn_spotify_signin.png'
-        />
-      )}
-
-
-      {currentUser && <SignOutButton />}
     </div>
   );
 }

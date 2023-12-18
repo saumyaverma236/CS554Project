@@ -8,7 +8,7 @@
 
     const handleSignOut = async () => {
       try {
-        await doSignOut(); // Assuming doSignOut returns a promise
+        await doSignOut();
         console.log("coming back");
         navigate('/signin');
       } catch (error) {
@@ -24,3 +24,4 @@
   };
 
   export default SignOut;
+

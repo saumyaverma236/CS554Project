@@ -1,7 +1,6 @@
 import { users } from "../config/mongoCollection.js";
 import bcrypt from "bcrypt";
 import validator from '../validation.js';
-
 import { ObjectId } from "mongodb";
 
 const signUpUser = async (name, email, password) => {
@@ -37,7 +36,6 @@ const signUpUser = async (name, email, password) => {
     const insertInfo = await userCollection.insertOne(info);
     return insertInfo
   };
-
 
 const createUser = async (name, email) => {
     // if(!helper.validName(name)){
