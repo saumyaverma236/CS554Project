@@ -59,7 +59,8 @@ async function doSignOut() {
   // const navigate = useNavigate();
   try {
     await signOut(auth);
-    window.localStorage.removeItem('user');
+    localStorage.removeItem('user');
+    localStorage.removeItem('access_token'); 
     alert("Sign-out successful");
     // navigate("/signin");
   } catch (error) {

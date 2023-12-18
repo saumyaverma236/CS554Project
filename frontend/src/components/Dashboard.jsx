@@ -6,6 +6,8 @@ import { AuthContext } from '../context/AuthContext';
 import '../App.css';
 import CreateRoomModal from './createRoomModal';
 import axios from 'axios';
+import SignOut from './SignOut'; 
+
 
 function Dashboard() {
   const [isModalOpen, setModalOpen] = useState(false);
@@ -67,9 +69,10 @@ function Dashboard() {
 
   const spotifyLogout = async () => {
     try {
-      // const { data } = await axios.get('http://localhost:3000/users/logout');
-      setAccessToken(undefined);
+      const { data } = await axios.get('http://localhost:3000/usersData/logout');
+      //setAccessToken(undefined);
       window.localStorage.removeItem('access_token');
+      window.location.removeItem('user');
     } catch (e) {
       console.error(e);
     }
@@ -124,6 +127,7 @@ function Dashboard() {
           />
         </>
       )}
+      <SignOut />
     </div>
   );
 }

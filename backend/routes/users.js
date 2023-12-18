@@ -53,5 +53,20 @@ router.post("/signup", async (req, res) => {
         return res.status(e[0]).json({error:e[1]});
     }
 });
+router.get('/logout', async (req, res) => {
+    if (req.session) {
+        req.session.destroy((err) => {
+            if (err) {
+                // handle error case here
+                res.status(500).send('Error while logging out');
+            } else {
+                res.send('Logged out');
+            }
+        });
+    } else {
+        res.send('No session to log out');
+    }
+});
+
 
 export default router;
