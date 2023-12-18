@@ -41,7 +41,7 @@ async function doSocialSignIn() {
   const socialProvider = new GoogleAuthProvider();
 
   try {
-    const user = await signInWithPopup(auth, socialProvider);
+    const {user} = await signInWithPopup(auth, socialProvider);
     localStorage.setItem('user', JSON.stringify(user));
   } catch (error) {
     alert(error.message);

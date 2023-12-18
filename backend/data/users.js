@@ -79,8 +79,8 @@ const getAllUsers = async () => {
 };
   
 const getUserById = async (id) => {
-    helper.validId(id);
-    id = helper.trimString(id);
+    
+    id = id.trim();
     const userCollection = await users();
     const user = await userCollection.findOne({ _id: new ObjectId(id) });
     if (!user) throw [404,"user with that id does not exist"];
@@ -93,7 +93,7 @@ const getUserByEmail = async (email) => {
     let user = null;
 
     userCollection.forEach(user => {
-        if(user.email === email){
+        if(user.email == email){
             return user;
         }
     });

@@ -15,7 +15,7 @@ const SocialSignIn = () => {
 
       console.log("Entering user data to database");
         
-       await axios.post('http://localhost:3000/usersData/signup', userData);
+      await axios.post('http://localhost:3000/usersData/signup', userData);
     } catch (error) {
       alert(error);
     }

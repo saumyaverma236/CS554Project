@@ -285,10 +285,9 @@ router.get('/callback', async (req, res) => {
         }
 
         // Storing access_token and refresh token in session
-        req.session.user.access_token = access_token;
-        req.session.user.refresh_token = refresh_token;
+        req.session.user={...req.session.user, access_token, refresh_token};
 
-        console.log(req.session);
+        console.log(req.session.user);
 
         return res.redirect(`http://localhost:5173/dashboard?access_token=${access_token}`);
         // res.redirect('/users/dashboard');

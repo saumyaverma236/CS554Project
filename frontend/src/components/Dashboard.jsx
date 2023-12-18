@@ -107,13 +107,13 @@ function Dashboard() {
       <h2>
         Hello {currentUser && currentUser.displayName}, this is the Protected Home page
       </h2>
-      {!accessToken && (
+      {/* {!accessToken && (
         <img
           onClick={() => spotifySignOn()}
           alt='spotify signin'
           src='/imgs/btn_spotify_signin.png'
         />
-      )}
+      )} */}
       {accessToken && (
         <>
           <h5>You're Logged into Spotify. Wanna Logout? Click Below</h5>
