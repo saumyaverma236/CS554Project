@@ -46,7 +46,10 @@ router.post("/signup", async (req, res) => {
     try {
       console.log(email);
         const newUser = await userData.createUser(xss(name), xss(email));
-        req.session.user = {...req.session.user, _id: newUser._id.toString()};
+        req.session.user = {
+            id: newUser._id.toString(),
+        }
+        // req.session.user = {...req.session.user, _id: newUser._id.toString()};
         console.log(req.session.user);
         return res.status(200).json({_id: newUser._id, name: newUser.name, email: newUser.email});gi 
     } catch (e) {

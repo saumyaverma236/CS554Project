@@ -67,16 +67,16 @@ function Dashboard() {
     }
   };
 
-  const spotifyLogout = async () => {
-    try {
-      const { data } = await axios.get('http://localhost:3000/usersData/logout');
-      //setAccessToken(undefined);
-      window.localStorage.removeItem('access_token');
-      window.location.removeItem('user');
-    } catch (e) {
-      console.error(e);
-    }
-  };
+  // const spotifyLogout = async () => {
+  //   try {
+  //     const { data } = await axios.get('http://localhost:3000/usersData/logout');
+  //     //setAccessToken(undefined);
+  //     window.localStorage.removeItem('access_token');
+  //     window.location.removeItem('user');
+  //   } catch (e) {
+  //     console.error(e);
+  //   }
+  // };
 
   useEffect(() => {
     const urlSearchParams = new URLSearchParams(window.location.search);
@@ -119,15 +119,16 @@ function Dashboard() {
       )} */}
       {accessToken && (
         <>
-          <h5>You're Logged into Spotify. Wanna Logout? Click Below</h5>
-          <img
+          <h5>Wanna Logout? Click Below</h5>
+          {/* <img
             onClick={() => spotifyLogout()}
             alt='spotify signin'
             src='/imgs/btn_spotify_logout.png'
-          />
+          /> */}
+          <SignOut />
         </>
       )}
-      <SignOut />
+      
     </div>
   );
 }
