@@ -67,16 +67,16 @@ function Dashboard() {
     }
   };
 
-  // const spotifyLogout = async () => {
-  //   try {
-  //     const { data } = await axios.get('http://localhost:3000/usersData/logout');
-  //     //setAccessToken(undefined);
-  //     window.localStorage.removeItem('access_token');
-  //     window.location.removeItem('user');
-  //   } catch (e) {
-  //     console.error(e);
-  //   }
-  // };
+  const spotifyLogout = async () => {
+    try {
+      const { data } = await axios.get('http://localhost:3000/usersData/logout');
+      //setAccessToken(undefined);
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('user');
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
   useEffect(() => {
     const urlSearchParams = new URLSearchParams(window.location.search);
