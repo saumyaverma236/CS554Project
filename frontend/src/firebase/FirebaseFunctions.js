@@ -11,11 +11,13 @@ import {
   EmailAuthProvider,
   reauthenticateWithCredential
 } from 'firebase/auth';
+// import { useNavigate } from 'react-router-dom';
 
 async function doCreateUserWithEmailAndPassword(email, password, displayName) {
   const auth = getAuth();
   await createUserWithEmailAndPassword(auth, email, password);
   await updateProfile(auth.currentUser, {displayName: displayName});
+  await signOut(auth);  
 }
 
 async function doChangePassword(email, oldPassword, newPassword) {
@@ -30,7 +32,8 @@ async function doChangePassword(email, oldPassword, newPassword) {
 
 async function doSignInWithEmailAndPassword(email, password) {
   let auth = getAuth();
-  await signInWithEmailAndPassword(auth, email, password);
+  const user = await signInWithEmailAndPassword(auth, email, password);
+  localStorage.setItem('user', JSON.stringify(user));
 }
 
 async function doSocialSignIn() {
@@ -38,7 +41,7 @@ async function doSocialSignIn() {
   const socialProvider = new GoogleAuthProvider();
 
   try {
-    const { user } = await signInWithPopup(auth, socialProvider);
+    const {user} = await signInWithPopup(auth, socialProvider);
     localStorage.setItem('user', JSON.stringify(user));
   } catch (error) {
     alert(error.message);
@@ -52,9 +55,20 @@ async function doPasswordReset(email) {
 }
 
 async function doSignOut() {
-  let auth = getAuth();
-  await signOut(auth);
+  const auth = getAuth();
+  // const navigate = useNavigate();
+  try {
+    await signOut(auth);
+    localStorage.removeItem('user');
+    localStorage.removeItem('access_token'); 
+    alert("Sign-out successful");
+    // navigate("/signin");
+  } catch (error) {
+    console.error('Error during sign-out:', error);
+    throw error; // Re-throw the error to handle in the calling code
+  }
 }
+
 
 export {
   doCreateUserWithEmailAndPassword,

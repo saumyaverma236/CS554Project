@@ -2,7 +2,7 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "MusicMates: Sync and share your music in real-time with friends, creating collaborative playlists and democratically controlling the vibe with a group voting feature. Join a room, queue songs, and enjoy a unified listening experience with those around you!",
-  "main": "index.js",
+  "main": "app.js",
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -16,7 +16,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@mui/material": "^5.15.0",
     "axios": "^1.3.5",
+    "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
@@ -30,7 +34,11 @@
     "lodash": "^4.17.21",
     "mongodb": "^5.1.0",
     "querystring": "^0.2.1",
+
     "socket.io": "^4.7.2",
+
+    "redis": "^4.6.12",
+
     "spotify-web-api-node": "^5.0.2",
     "xss": "^1.0.14"
   },
