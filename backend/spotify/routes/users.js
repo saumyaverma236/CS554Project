@@ -179,8 +179,8 @@ import xss from 'xss';
 import * as userData from '../../data/users.js'
 
 dotenv.config();
-const CLIENT_ID = "f390e52ef3e0415eb2b5abb8ee79a147"; // Your client id
-const CLIENT_SECRET = "76a5ff2b5a4f4d07bca9330217c5fb8f"; // Your secret
+const CLIENT_ID = process.env.CLIENT_ID // Your client id
+const CLIENT_SECRET = process.env.CLIENT_SECRET; // Your secret
 const redirect_uri = 'http://localhost:3000/users/callback'; // Your redirect uri
 
 const generateRandomString = (length) => {
