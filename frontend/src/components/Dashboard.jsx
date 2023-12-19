@@ -119,15 +119,16 @@ function Dashboard() {
       )} */}
       {accessToken && (
         <>
-          <h5>You're Logged into Spotify. Wanna Logout? Click Below</h5>
-          <img
+          <h5>Wanna Logout? Click Below</h5>
+          {/* <img
             onClick={() => spotifyLogout()}
             alt='spotify signin'
             src='/imgs/btn_spotify_logout.png'
-          />
+          /> */}
+          <SignOut />
         </>
       )}
-      <SignOut />
+      
     </div>
   );
 }
