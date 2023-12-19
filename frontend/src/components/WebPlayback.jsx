@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import SearchModal from './search/SearchModal';
+import MusicPlayerScrubber from './MusicPlayerScrubber';
 
 import DeviceContext from '../context/DeviceContext';
 import axios from 'axios';
@@ -18,6 +19,8 @@ const track = {
 
 function WebPlayback(props) {
 
+	let counter = 0
+
 	const [is_paused, setPaused] = useState(false);
 	const [is_active, setActive] = useState(false);
 	const [player, setPlayer] = useState(undefined);
@@ -25,7 +28,15 @@ function WebPlayback(props) {
 	const [queue, setQueue] = useState([]);
 	const deviceID = useRef(null);
 
+	// const [playbackResponse, setPlaybackResponse] = useState(undefined)
+
 	const [showSearchModal, setShowSearchModal] = useState(false);
+    counter += 1
+	console.log('myplayerstate:::::::::')
+	console.log(counter)
+	console.log(props.playerState)
+	// If user is admin just emit playback changes to server
+	// for other users get state from server and update playback
 
 	useEffect(() => {
 
@@ -57,6 +68,8 @@ function WebPlayback(props) {
 
 			player.addListener('player_state_changed', ( async state => {
 
+				
+			
 				if (!state) {
 					return;
 				}
@@ -70,6 +83,16 @@ function WebPlayback(props) {
 				player.getCurrentState().then(state => {
 					(!state) ? setActive(false) : setActive(true)
 				});
+				counter += 1
+				console.log('inside player state changed:')
+				console.log(counter)
+				console.log(state)
+
+				 // Emit the current state to the server through the socket
+				 props.socketRef.current.emit('player_state_changed', {
+					state
+					// Include other relevant state information
+				  });
 
 			}));
 
@@ -77,6 +100,7 @@ function WebPlayback(props) {
 
 		};
 
+		
 
 	}, []);
 
@@ -86,8 +110,9 @@ function WebPlayback(props) {
 	// const getPlaybackState = async () => {
 	// 	try {
 	// 		const { data } = await axios.get('/api/playback-state');
-
+    //         console.log('my playback data::::::')
 	// 		console.log(data);
+	// 		setPlaybackResponse(data)
 	// 	} catch (error) {
 	// 		console.log(error);
 	// 	}
@@ -96,7 +121,7 @@ function WebPlayback(props) {
 	// setInterval(() => {
 	// 	console.log('Getting Playback State');
 	// 	getPlaybackState();
-	// }, 60000);
+	// }, 1000);
 	
 	const fetchData = async (deviceId) => {
 		try {
@@ -113,6 +138,8 @@ function WebPlayback(props) {
 	const handleCloseModals = () => {
 		setShowSearchModal(false);
 	}
+
+	
 
 	if (!is_active) {
 		return (
@@ -146,6 +173,8 @@ function WebPlayback(props) {
 						<div className="main-wrapper">
 
 							<img src={current_track.album.images[0].url} className="now-playing__cover" alt="" />
+							{/* <MusicPlayerScrubber playbackResponse={playbackResponse}/> */}
+
 
 							<div className="now-playing__side">
 								<div className="now-playing__name">{current_track.name}</div>

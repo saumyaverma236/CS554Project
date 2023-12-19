@@ -1,5 +1,5 @@
 import "../src/App.css"
-import React from 'react';
+import React,{useRef, useState, useEffect} from 'react';
 import {Route, Routes} from 'react-router-dom';
 import SignIn from './components/SignIn'
 import SignUp from './components/SignUp'
@@ -10,7 +10,10 @@ import {AuthProvider} from './context/AuthContext';
 import RoomDetail from "./components/RoomDetail";
 
 
+
 function App() {
+
+
   return (
     <AuthProvider>
       <div className='App'>

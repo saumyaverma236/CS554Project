@@ -92,6 +92,12 @@ import configRoutes2 from './routes/index.js';
 import { fileURLToPath } from 'url';
 import path from 'path';
 import exphbs from 'express-handlebars';
+import {createServer} from 'http';
+import {Server} from 'socket.io';
+
+
+
+
 
 
 // const filename = fileURLToPath(import.meta.url);
@@ -113,6 +119,8 @@ Generates a random string containing numbers and letters
 
 
 const app = express();
+const httpServer = createServer(app);
+const io = new Server(httpServer, {cors: {origin: '*'}});
 app.use("/public",stat)
 
 
@@ -162,7 +170,39 @@ app.engine('handlebars', exphbs.engine({
 
 configRoutes(app);
 configRoutes2(app);
-app.listen(3000, () => {
-      console.log("We've now got a server!");
-      console.log('Your routes will be running on http://localhost:3000');
-})
+
+io.on('connection', (socket) => {
+   console.log('new client connected', socket.id);
+ 
+   socket.on('user_join', (name) => {
+     console.log('A user joined their name is ' + name);
+   //   socket.broadcast.emit('user_join', name);
+      io.emit('user_join', name)
+   });
+ 
+   socket.on('message', ({name, message}) => {
+     console.log(name, message, socket.id);
+     io.emit('message', {name, message});
+   });
+
+   socket.on('player_state_changed', (playerState) => {
+      console.log('Spotify player state changed reading in server ');
+      console.log(playerState);
+      //io.broadcast.emit('update_player_state', playerState);
+      socket.broadcast.emit('update_player_state', playerState);
+
+    });
+ 
+   socket.on('disconnect', () => {
+     console.log('Disconnect Fired');
+   });
+ });
+
+httpServer.listen(3000, () => {
+   console.log(`listening on *:${3000}`);
+ });
+
+// app.listen(3000, () => {
+//       console.log("We've now got a server!");
+//       console.log('Your routes will be running on http://localhost:3000');
+// })
