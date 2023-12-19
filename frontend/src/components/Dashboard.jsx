@@ -17,6 +17,9 @@ function Dashboard() {
     setModalOpen(false);
   };
   const { currentUser } = useContext(AuthContext);
+
+  console.log('my current user set is:::')
+  console.log(currentUser)
   const [accessToken, setAccessToken] = useState(undefined);
   const [loading, setLoading] = useState(false);
 

@@ -32,12 +32,62 @@ function WebPlayback(props) {
 	// const [playbackResponse, setPlaybackResponse] = useState(undefined)
 
 	const [showSearchModal, setShowSearchModal] = useState(false);
-    counter += 1
-	console.log('myplayerstate:::::::::')
-	console.log(counter)
-	console.log(props.playerState)
-	// If user is admin just emit playback changes to server
-	// for other users get state from server and update playback
+    // counter += 1
+	// console.log('myplayerstate:::::::::')
+	// // console.log(counter)
+	// // console.log(props.playerState)
+
+	
+	
+
+
+
+	useEffect(() => {
+		console.log('inside my useEffect myplayerstate update')
+		// const syncPlayback = async () => {
+		//   try {
+			    console.log('recieved updated state in WebPlayback')
+                console.log(props.playerState)
+
+
+
+                if (props.playerState && props.playerState.track_window) {
+					// Proceed with updating state
+					setTrack(props.playerState.track_window.current_track);
+					setQueue(props.playerState.track_window.next_tracks.slice(0, 5));
+					setPaused(props.playerState.paused);
+				  } else {
+					console.log('not able to set track')
+				  }
+			    
+				
+			// // Assume that props.playbackState contains the position in milliseconds
+			// const position_ms = props.playbackState.position_ms;
+			
+			// // Your POST request to seek playback
+			// const response = await axios.post('/api/seek-playback', {
+			//   position_ms: position_ms,
+			//   // You might need to send other data, such as a device ID or track ID
+			// });
+
+			// const { data } = await axios.post('/api/playback-state', {time: props.playerState.position});
+            // console.log('my playback data::::::')
+			// console.log(data);
+		// 	// setPlaybackResponse(data)
+	  
+		// 	console.log('Playback seeked successfully:');
+		// 	console.log(data);
+		//   } catch (error) {
+		// 	console.error('Error seeking playback:', error);
+		//   }
+		// };
+	  
+		// if (props.playbackState) {
+		// 	syncPlayback();
+		// }
+		
+	  }, [props.playerState]); // Effect will re-run if props.playbackState changes
+	  
 
 	useEffect(() => {
 
