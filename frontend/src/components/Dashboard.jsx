@@ -71,8 +71,8 @@ function Dashboard() {
     try {
       const { data } = await axios.get('http://localhost:3000/usersData/logout');
       //setAccessToken(undefined);
-      window.localStorage.removeItem('access_token');
-      window.location.removeItem('user');
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('user');
     } catch (e) {
       console.error(e);
     }
