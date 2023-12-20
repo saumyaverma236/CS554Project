@@ -199,7 +199,9 @@ io.on('connection', (socket) => {
      
       socket.broadcast.emit('update_player_state', {
          current_track: playerState.state.track_window.current_track.uri,
-         next_tracks: playerState.state.track_window.next_tracks
+         next_tracks: playerState.state.track_window.next_tracks,
+         paused: playerState.state.paused,
+         position: playerState.state.position
        });
 
     });
