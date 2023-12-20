@@ -134,7 +134,7 @@ const RoomDetail = () => {
             )}
           </div>
           <div className="music-player">
-            <WebPlayback token={window.localStorage.getItem('access_token')} socketRef={socketRef} playerState={playerState}/>
+            <WebPlayback token={window.localStorage.getItem('access_token')} socketRef={socketRef} playerState={playerState} isHost={isHost}/>
           </div>
           <div className={`chat-box ${isChatVisible ? 'visible' : 'hidden'}`}>
             {/* Add a button to toggle chat visibility */}
