@@ -49,10 +49,16 @@ function WebPlayback(props) {
 		
 			    console.log('recieved updated state in WebPlayback')
                 console.log(props.playerState)
+				
 
 				const fetchData = async () => {
 					console.log('called fetchdata in useeffect:::: ')
 					let test = [props.playerState.current_track];
+
+					if (props.playerState.paused) {
+						player.togglePlay()
+						return
+					}
 
 					
 					try {
@@ -73,9 +79,11 @@ function WebPlayback(props) {
 
 							// setTimeout(() => {
 							// 	if (props.playerState.paused === true) {
-							// 		player.togglePlay()
+							// 		player.pause().then(() => {
+							// 			console.log('Paused!');
+							// 		  });
 							// 	}
-							// }, 100);
+							// }, 300);
 							
 
 							
