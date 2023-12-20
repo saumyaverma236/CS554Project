@@ -27,6 +27,7 @@ function WebPlayback(props) {
 	const [player, setPlayer] = useState(undefined);
 	const [current_track, setTrack] = useState(track);
 	const [queue, setQueue] = useState([]);
+	const [selfUpdate, setSelfUpdate] = useState(true)
 	const deviceID = useRef(null);
 
 	// const [playbackResponse, setPlaybackResponse] = useState(undefined)
@@ -38,7 +39,7 @@ function WebPlayback(props) {
 	// // console.log(props.playerState)
 
 	
-	
+	let shouldEmit = true
 
 
 
@@ -49,42 +50,48 @@ function WebPlayback(props) {
 			    console.log('recieved updated state in WebPlayback')
                 console.log(props.playerState)
 
+				const fetchData = async () => {
+					console.log('called fetchdata in useeffect:::: ')
+					let test = [props.playerState.current_track];
 
+					if (props.playerState.current_track)
+					try {
 
-                if (props.playerState && props.playerState.track_window) {
-					// Proceed with updating state
-					setTrack(props.playerState.track_window.current_track);
-					setQueue(props.playerState.track_window.next_tracks.slice(0, 5));
-					setPaused(props.playerState.paused);
-				  } else {
-					console.log('not able to set track')
-				  }
+						// if (props.next_tracks) {
+							let test2 = props.playerState.next_tracks.map(track => track.uri);
+							test = [props.playerState.current_track, ...test2]
+						// 	let queueUris = props.playerState.track_window.next_tracks.map((track) => {
+						// 		return track.uri
+						// })
+	
+						// let trackUris = [props.playerState.track_window.current_track.uri]
+						// trackUris = trackUris.concat(queueUris)
+						console.log('my uris::::')
+						console.log(test)
+						
+						    // setSelfUpdate(false)
+							const { data } = await axios.post('/api/set-track', {
+								trackUris: test
+								// trackUris: [props.playerState.track_window.current_track.uri, "spotify:track:1301WleyT98MSxVHPZCA6M"]
+							});
+							setSelfUpdate(false)
+							console.log(data);
+
+							
+						// }
+
+					
+					} catch (error) {
+						setSelfUpdate(true)
+						console.log(error);
+					}
+				};
+
+                
 			    
+				fetchData()
 				
-			// // Assume that props.playbackState contains the position in milliseconds
-			// const position_ms = props.playbackState.position_ms;
-			
-			// // Your POST request to seek playback
-			// const response = await axios.post('/api/seek-playback', {
-			//   position_ms: position_ms,
-			//   // You might need to send other data, such as a device ID or track ID
-			// });
 
-			// const { data } = await axios.post('/api/playback-state', {time: props.playerState.position});
-            // console.log('my playback data::::::')
-			// console.log(data);
-		// 	// setPlaybackResponse(data)
-	  
-		// 	console.log('Playback seeked successfully:');
-		// 	console.log(data);
-		//   } catch (error) {
-		// 	console.error('Error seeking playback:', error);
-		//   }
-		// };
-	  
-		// if (props.playbackState) {
-		// 	syncPlayback();
-		// }
 		
 	  }, [props.playerState]); // Effect will re-run if props.playbackState changes
 	  
@@ -139,11 +146,15 @@ function WebPlayback(props) {
 				console.log(counter)
 				console.log(state)
 
+				// Emit only when state changes from player manual changes and not fetchData api
 				 // Emit the current state to the server through the socket
-				 props.socketRef.current.emit('player_state_changed', {
-					state
-					// Include other relevant state information
-				  });
+				 if (selfUpdate) {
+					props.socketRef.current.emit('player_state_changed', {
+						state
+						// Include other relevant state information
+					  });
+				 }
+				 
 
 			}));
 
@@ -154,6 +165,8 @@ function WebPlayback(props) {
 		
 
 	}, []);
+
+	
 
 	// API Call to get Playback State 
 	// SetInterval to retrieve state every x seconds
@@ -231,15 +244,24 @@ function WebPlayback(props) {
 								<div className="now-playing__name">{current_track.name}</div>
 								<div className="now-playing__artist">{current_track.artists[0].name}</div>
 
-								<button className="btn-spotify" onClick={() => { player.previousTrack() }} >
+								<button className="btn-spotify" onClick={() => { 
+									setSelfUpdate(true)
+									player.previousTrack() 
+									}} >
 									&lt;&lt;
 								</button>
 
-								<button className="btn-spotify" onClick={() => { player.togglePlay() }} >
+								<button className="btn-spotify" onClick={() => {
+									 setSelfUpdate(true)
+									 player.togglePlay() 
+									 }} >
 									{is_paused ? "PLAY" : "PAUSE"}
 								</button>
 
-								<button className="btn-spotify" onClick={() => { player.nextTrack() }} >
+								<button className="btn-spotify" onClick={() => { 
+									setSelfUpdate(true)
+									player.nextTrack() 
+									}} >
 									&gt;&gt;
 								</button>
 							</div>
