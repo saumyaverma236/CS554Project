@@ -119,52 +119,6 @@ const RoomDetail = () => {
         <h1>Getting Room Info</h1>
     )
   } else {
-    // return (
-    //     <div className="room-detail-container">
-    //       <div className="room-header">
-    //         {/* Room Header Content */}
-    //         <h1>Welcome to {roomInfo && roomInfo.title}</h1>
-    //         {isHost ? (
-    //         <div>
-    //           {/* Content only visible to the host */}
-    //           <p>You are the host of this room</p>
-    //           {/* Other host-specific controls here */}
-    //         </div>
-    //       ) : (
-    //         <div>
-    //           {/* Content for non-host users */}
-    //           <p>Welcome! Wait for host to start music party</p>
-    //           {/* Other non-host-specific content here */}
-    //         </div>
-    //       )}
-    //         {/* Other controls */}
-    //       </div>
-    //       <div className="music-player">
-    //         <div>
-    //         <WebPlayback token={ window.localStorage.getItem('access_token') } socketRef={socketRef} playerState={playerState}/>
-    //         </div>
-    //       </div>
-    //       <div className="chat-box">
-    //         <div className="messages">
-    //           {chat.map((obj, index) => (
-    //             <div key={index} className="message">
-    //               <span>{obj.message}</span>
-    //               <span className="timestamp">{obj.name}</span>
-    //             </div>
-    //           ))}
-    //         </div>
-    //         <div className="message-input">
-    //           <input
-    //             type="text"
-    //             value={newMessage}
-    //             onChange={(e) => setNewMessage(e.target.value)}
-    //             placeholder="Send a message..."
-    //           />
-    //           <button onClick={handleSend}>Send</button>
-    //         </div>
-    //       </div>
-    //     </div>
-    //   );
     return (
         <div className="room-detail-container">
           <div className="room-header">
@@ -212,98 +166,11 @@ const RoomDetail = () => {
     };
   
 
-//   return (
-//     <div className="room-detail-container">
-//       <div className="room-header">
-//         {/* Room Header Content */}
-//         <h1>Welcome to {roomInfo && roomInfo.title}</h1>
-        
-//         {/* Other controls */}
-//       </div>
-//       <div className="music-player">
-//         <div>
-//         <WebPlayback token={ window.localStorage.getItem('access_token') } socketRef={socketRef} playerState={playerState}/>
-//         </div>
-//       </div>
-//       <div className="chat-box">
-//         <div className="messages">
-//           {chat.map((obj, index) => (
-//             <div key={index} className="message">
-//               <span>{obj.message}</span>
-//               <span className="timestamp">{obj.name}</span>
-//             </div>
-//           ))}
-//         </div>
-//         <div className="message-input">
-//           <input
-//             type="text"
-//             value={newMessage}
-//             onChange={(e) => setNewMessage(e.target.value)}
-//             placeholder="Send a message..."
-//           />
-//           <button onClick={handleSend}>Send</button>
-//         </div>
-//       </div>
-//     </div>
-//   );
 };
 
-// }
+
 
 export default RoomDetail;
 
 
-
-// import React, { useState } from 'react';
-// import '../RoomDetail.css'; // Your CSS file for styling
-// import WebPlayback from './WebPlayback';
-
-// const RoomDetail = () => {
-//   const [messages, setMessages] = useState([]); // Placeholder for chat messages
-//   const [newMessage, setNewMessage] = useState('');
-
-//   const handleSend = () => {
-//     if (newMessage.trim()) {
-//       const timestamp = new Date().toISOString();
-//       setMessages([...messages, { text: newMessage, timestamp }]);
-//       setNewMessage(''); // Reset input field
-//     }
-//   };
-
-//   return (
-//     <div className="room-detail-container">
-//       <div className="room-header">
-//         {/* Room Header Content */}
-//         <h1>Room Name</h1>
-//         {/* Other controls */}
-//       </div>
-//       <div className="music-player">
-//         <div>
-//         <WebPlayback token={ window.localStorage.getItem('access_token') } />
-//         </div>
-//       </div>
-//       <div className="chat-box">
-//         <div className="messages">
-//           {messages.map((message, index) => (
-//             <div key={index} className="message">
-//               <span>{message.text}</span>
-//               <span className="timestamp">{message.timestamp}</span>
-//             </div>
-//           ))}
-//         </div>
-//         <div className="message-input">
-//           <input
-//             type="text"
-//             value={newMessage}
-//             onChange={(e) => setNewMessage(e.target.value)}
-//             placeholder="Send a message..."
-//           />
-//           <button onClick={handleSend}>Send</button>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default RoomDetail;
 
