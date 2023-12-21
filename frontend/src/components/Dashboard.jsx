@@ -8,6 +8,7 @@ import CreateRoomModal from './createRoomModal';
 import axios from 'axios';
 import SignOut from './SignOut';
 import PublicRooms from './PublicRooms';
+import Profile from './Profile';
 import NavigationBar from './NavigationBar';
 
 function Dashboard() {
@@ -165,9 +166,10 @@ function Dashboard() {
         />
       )}
 
-      {/* {currentView === 'profile' && accessToken && (
+      {currentView === 'profile' && accessToken && (
+        <Profile />
         // Profile content goes here
-      )} */}
+      )}
     </div>
   );
 }
