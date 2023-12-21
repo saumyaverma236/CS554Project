@@ -114,6 +114,15 @@ const RoomDetail = () => {
     }
   };
 
+  const handleHostPlayerAction = (message) => {
+    // Add your logic here to handle play/pause state change
+    console.log(`Play/Pause button pressed`);
+    socketRef.current.emit('message', {
+      name: 'Chatbot',
+      message: message
+    });
+  };
+
   if (!roomInfo) {
     return (
         <h1>Getting Room Info</h1>
@@ -134,7 +143,12 @@ const RoomDetail = () => {
             )}
           </div>
           <div className="music-player">
-            <WebPlayback token={window.localStorage.getItem('access_token')} socketRef={socketRef} playerState={playerState} isHost={isHost}/>
+            <WebPlayback token={window.localStorage.getItem('access_token')}
+              socketRef={socketRef}
+              playerState={playerState}
+              isHost={isHost}
+              handleHostPlayerAction={handleHostPlayerAction}
+              />
           </div>
           <div className={`chat-box ${isChatVisible ? 'visible' : 'hidden'}`}>
             {/* Add a button to toggle chat visibility */}
@@ -144,8 +158,8 @@ const RoomDetail = () => {
                 <div className="messages">
                   {chat.map((obj, index) => (
                     <div key={index} className="message">
-                      <span>{obj.message}</span>
-                      <span className="timestamp">{obj.name}</span>
+                      <span>{obj.name}: {obj.message}</span>
+                      
                     </div>
                   ))}
                 </div>
