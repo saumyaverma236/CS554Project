@@ -1,4 +1,4 @@
-
+// Dashboard.js
 import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, TextField, Typography, Box } from '@mui/material';
@@ -7,7 +7,7 @@ import '../App.css';
 import CreateRoomModal from './createRoomModal';
 import axios from 'axios';
 import SignOut from './SignOut';
-
+import PublicRooms from './PublicRooms';
 
 function Dashboard() {
   const [isModalOpen, setModalOpen] = useState(false);
@@ -18,47 +18,55 @@ function Dashboard() {
   };
   const { currentUser } = useContext(AuthContext);
 
-  console.log('my current user set is:::')
-  console.log(currentUser)
   const [accessToken, setAccessToken] = useState(undefined);
   const [loading, setLoading] = useState(false);
 
   const [roomCode, setRoomCode] = useState('');
+  const [publicRoomsData, setPublicRoomsData] = useState(undefined);
+  const [isPublicRoomsModalOpen, setPublicRoomsModalOpen] = useState(false);
 
   const handleRoomCodeChange = (event) => {
     setRoomCode(event.target.value);
   };
 
   const handleJoinRoom = async () => {
-    // Implement the logic to join the room using the room code
-    console.log('go to room detail')
-    
+    console.log('go to room detail');
 
     try {
       const response = await axios.get(`http://localhost:3000/rooms/${roomCode}`);
-  const room = response.data;
-  console.log('room is::::')
-  console.log(room)
+      const room = response.data;
+      console.log('room is::::');
+      console.log(room);
 
-  
-  navigate(`/rooms/${roomCode}`);
-  
+      navigate(`/rooms/${roomCode}`);
+    } catch (error) {
+      console.log(error);
+      alert(error);
+    }
+  };
 
+  const handlePublicRoomsClose = () => {
+    console.log("handling public rooms close")
+    setPublicRoomsModalOpen(false);
+  };
 
-
-  } catch (error) {
-      console.log(error)
-      alert(error)
-  }
-    
+  const handlePublicRooms = async () => {
+    try {
+      const response = await axios.get('http://localhost:3000/rooms/publicRooms');
+      const rooms = response.data;
+      console.log("PUBLIC ROOMS:", rooms)
+      setPublicRoomsData(rooms);
+      setPublicRoomsModalOpen(true);
+    } catch (error) {
+      console.log(error);
+      alert(error);
+    }
   };
 
   const handleCreateRoom = () => {
-    // Implement the logic to create a new room
-    console.log('create room button tapped')
+    console.log('create room button tapped');
     setModalOpen(true);
   };
-
 
   const spotifySignOn = async () => {
     try {
@@ -73,7 +81,6 @@ function Dashboard() {
   const spotifyLogout = async () => {
     try {
       const { data } = await axios.get('http://localhost:3000/usersData/logout');
-      //setAccessToken(undefined);
       localStorage.removeItem('access_token');
       localStorage.removeItem('user');
     } catch (e) {
@@ -104,20 +111,43 @@ function Dashboard() {
       <Typography variant="body1">It's great to see you again.</Typography>
       
       <Button 
-       onClick={handleCreateRoom} 
-       style={{ 
-       backgroundColor: '#40e0d0', 
-       color: 'white', 
-       padding: '10px 20px', 
-       width: '200px', // Fixed width
-       margin: '10px auto', // Center the button
-       display: 'block' // Make the button a block element
-       }}
-       variant="contained"
+        onClick={handlePublicRooms}
+        style={{ 
+          backgroundColor: '#ff7f50', 
+          color: 'white', 
+          padding: '10px 20px', 
+          width: '200px', 
+          margin: '10px auto', 
+          display: 'block' 
+        }}
+        variant="contained"
       >
-      Create Room
-     </Button>
-
+        Browse Public Rooms
+      </Button>
+      {publicRoomsData && publicRoomsData.length > 0 && (
+    <PublicRooms
+      publicRooms={publicRoomsData}
+      onClose={handlePublicRoomsClose}
+      onCardClick={(room) => {
+        console.log('Clicked on room:', room);
+        // Add logic to handle the clicked card
+      }}
+    />
+  )}
+      <Button 
+        onClick={handleCreateRoom} 
+        style={{ 
+          backgroundColor: '#40e0d0', 
+          color: 'white', 
+          padding: '10px 20px', 
+          width: '200px', 
+          margin: '10px auto', 
+          display: 'block' 
+        }}
+        variant="contained"
+      >
+        Create Room
+      </Button>
 
       <CreateRoomModal currentUser={currentUser} isOpen={isModalOpen} onClose={handleModalClose} />
 
@@ -131,24 +161,19 @@ function Dashboard() {
         />
         <Button 
           onClick={handleJoinRoom}
-          
           style={{ 
             backgroundColor: '#ff7f50', 
             color: 'white', 
             padding: '10px 20px', 
-            width: '200px', // Fixed width
-            margin: '10px auto', // Center the button
-            display: 'block' // Make the button a block element
-            }}
+            width: '200px', 
+            margin: '10px auto', 
+            display: 'block' 
+          }}
           variant="contained"
         >
           Join
         </Button>
       </Box>
-
-      {/* <Typography variant="h2" style={{ color: '#ff7f50' }}>
-        Hello {currentUser && currentUser.displayName}, this is the Protected Home page
-      </Typography> */}
 
       {accessToken && (
         <>
