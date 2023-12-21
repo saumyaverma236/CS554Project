@@ -49,10 +49,16 @@ function WebPlayback(props) {
 		
 			    console.log('recieved updated state in WebPlayback')
                 console.log(props.playerState)
+				
 
 				const fetchData = async () => {
 					console.log('called fetchdata in useeffect:::: ')
 					let test = [props.playerState.current_track];
+
+					if (props.playerState.paused) {
+						player.togglePlay()
+						return
+					}
 
 					
 					try {
@@ -73,9 +79,11 @@ function WebPlayback(props) {
 
 							// setTimeout(() => {
 							// 	if (props.playerState.paused === true) {
-							// 		player.togglePlay()
+							// 		player.pause().then(() => {
+							// 			console.log('Paused!');
+							// 		  });
 							// 	}
-							// }, 100);
+							// }, 300);
 							
 
 							
@@ -246,7 +254,9 @@ function WebPlayback(props) {
 								<div className="now-playing__name">{current_track.name}</div>
 								<div className="now-playing__artist">{current_track.artists[0].name}</div>
 
-								<button className="btn-spotify" onClick={() => { 
+								{props.isHost && (
+          <>
+           <button className="btn-spotify" onClick={() => { 
 									// setSelfUpdate(true)
 									player.previousTrack() 
 									setTimeout(() => {
@@ -288,6 +298,50 @@ function WebPlayback(props) {
 									}} >
 									&gt;&gt;
 								</button>
+          </>
+        )}
+								{/* <button className="btn-spotify" onClick={() => { 
+									// setSelfUpdate(true)
+									player.previousTrack() 
+									setTimeout(() => {
+										player.getCurrentState().then(mystate => {
+											console.log('after previous track')
+											console.log(mystate)
+											emitPlayerState(mystate)
+										});
+									}, 100);
+									}} >
+									&lt;&lt;
+								</button>
+
+								<button className="btn-spotify" onClick={() => {
+									//  setSelfUpdate(true)
+									 player.togglePlay() 
+									 // Set a delay of 100 milliseconds (adjust as needed)
+									setTimeout(() => {
+										player.getCurrentState().then(mystate => {
+											console.log('after toggle play')
+											console.log(mystate)
+											emitPlayerState(mystate)
+										});
+									}, 100);
+									 }} >
+									{is_paused ? "PLAY" : "PAUSE"}
+								</button>
+
+								<button className="btn-spotify" onClick={() => { 
+									// setSelfUpdate(true)
+									player.nextTrack() 
+									setTimeout(() => {
+										player.getCurrentState().then(mystate => {
+											console.log('after next track')
+											console.log(mystate)
+											emitPlayerState(mystate)
+										});
+									}, 100);
+									}} >
+									&gt;&gt;
+								</button> */}
 							</div>
 
                             <div>
