@@ -264,6 +264,7 @@ function WebPlayback(props) {
 											console.log('after previous track')
 											console.log(mystate)
 											emitPlayerState(mystate)
+											props.handleHostPlayerAction('Host skipped to previous song in queue')
 										});
 									}, 100);
 									}} >
@@ -273,6 +274,7 @@ function WebPlayback(props) {
 								<button className="btn-spotify" onClick={() => {
 									//  setSelfUpdate(true)
 									 player.togglePlay() 
+									 
 									 // Set a delay of 100 milliseconds (adjust as needed)
 									setTimeout(() => {
 										player.getCurrentState().then(mystate => {
@@ -280,9 +282,11 @@ function WebPlayback(props) {
 											console.log(mystate)
 											emitPlayerState(mystate)
 										});
+										props.handleHostPlayerAction('Host toggled play state of song')
 									}, 100);
 									 }} >
 									{is_paused ? "PLAY" : "PAUSE"}
+									
 								</button>
 
 								<button className="btn-spotify" onClick={() => { 
@@ -294,6 +298,7 @@ function WebPlayback(props) {
 											console.log(mystate)
 											emitPlayerState(mystate)
 										});
+										props.handleHostPlayerAction('Host skipped to next song in queue')
 									}, 100);
 									}} >
 									&gt;&gt;
