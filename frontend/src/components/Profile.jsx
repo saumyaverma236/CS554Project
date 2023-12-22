@@ -19,6 +19,12 @@ function Profile() {
   const [isEditingName, setIsEditingName] = useState(false);
   const [isChangingPassword, setIsChangingPassword] = useState(false);
   const [error, setError] = useState(null);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+
+  const showErrorSnackbar = (message) => {
+    setError(message);
+    setOpenSnackbar(true);
+  };
 
   useEffect(() => {
     setNewName(currentUser?.displayName || '');
@@ -84,6 +90,21 @@ function Profile() {
 
   const handleSaveName = async () => {
     try {
+      let nameValid = newName.trim()
+      if (nameValid.length === 0){
+        showErrorSnackbar(`Name cannot be an empty string or string with just spaces`);
+        return;
+      }
+
+      if(!nameValid.match(/^[a-z ,.'-]+$/gi)){
+        showErrorSnackbar(`Name shouldn't contain numbers`)
+        return;
+      }
+      if(!(nameValid.length>1 & nameValid.length<26)){
+        showErrorSnackbar(`Name should contain atleast 2 characters and less than 26 characters`)
+        return;
+      }
+
       await updateProfile(currentUser, { displayName: newName });
       const result = await axios.post('http://localhost:3000/usersData/NameUpdate', {
         name: newName,
@@ -119,7 +140,7 @@ function Profile() {
       <h2>Profile</h2>
       <p>Email: {currentUser?.email}</p>
       <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
-        <label htmlFor="newName" style={{ marginRight: '10px', minWidth: '50px' }}>Name:</label>
+        <label style={{ marginRight: '10px', minWidth: '50px' }}>Name:</label>
         {isEditingName ? (
           <>
             <input
@@ -127,13 +148,13 @@ function Profile() {
               id="newName"
               value={newName}
               onChange={(e) => setNewName(e.target.value)}
-              style={{ maxWidth: '100px' }}
+              style={{ maxWidth: '150px' }}
             />
             <IconButton
               size="small"
               onClick={handleSaveName}
               aria-label="Save"
-              style={{ marginLeft: '5px', padding: '5px', maxWidth: '20px', maxHeight: '20px' }}
+              style={{ marginLeft: '5px', padding: '5px', maxWidth: '20px', maxHeight: '20px', borderRadius: '0' }}
             >
               <CheckIcon fontSize="small" />
             </IconButton>
@@ -145,7 +166,7 @@ function Profile() {
               size="small"
               onClick={handleEditName}
               aria-label="Edit"
-              style={{ marginLeft: '5px', padding: '5px', maxWidth: '20px', maxHeight: '20px' }}
+              style={{ marginLeft: '5px', padding: '5px', maxWidth: '20px', maxHeight: '20px', borderRadius: '0' }}
             >
               <EditIcon fontSize="small" />
             </IconButton>
@@ -156,7 +177,7 @@ function Profile() {
         {isChangingPassword && (
           <>
             <div style={{ display: 'flex', marginBottom: '10px' }}>
-              <label htmlFor="currentPassword" style={{ marginRight: '10px' }}>Current Password:</label>
+              <label style={{ marginRight: '10px' }}>Current Password:</label>
               <input
                 type="password"
                 id="currentPassword"
@@ -165,7 +186,7 @@ function Profile() {
               />
             </div>
             <div style={{ display: 'flex' }}>
-              <label htmlFor="newPassword" style={{ marginRight: '10px' }}>New Password:</label>
+              <label style={{ marginRight: '10px' }}>New Password:</label>
               <input
                 type="password"
                 id="newPassword"

@@ -32,17 +32,19 @@ function SignUp() {
     const { displayName, email, passwordOne, passwordTwo } = e.target.elements;
 
     let nameValid = displayName.value.trim()
-    if (nameValid.length === 0)
-    showErrorSnackbar(`Name cannot be an empty string or string with just spaces`);
+    if (nameValid.length === 0){
+      showErrorSnackbar(`Name cannot be an empty string or string with just spaces`);
+      return;
+    }
 
-        if(!nameValid.match(/^[a-z ,.'-]+$/gi)){
-          showErrorSnackbar(`Name shouldn't contain numbers`)
-          return;
-        }
-        if(!(nameValid.length>1 & nameValid.length<25)){
-          showErrorSnackbar(`Name should contain atleast 2 characters and less than 26 characters`)
-          return;
-        }
+    if(!nameValid.match(/^[a-z ,.'-]+$/gi)){
+      showErrorSnackbar(`Name shouldn't contain numbers`)
+      return;
+    }
+    if(!(nameValid.length>1 & nameValid.length<26)){
+      showErrorSnackbar(`Name should contain atleast 2 characters and less than 26 characters`)
+      return;
+    }
 
     let emailValid = email.value.trim().toLowerCase();
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -58,6 +60,7 @@ function SignUp() {
       showErrorSnackbar("Email address must have at least 3 characters before the @gmail.com domain");
       return;
     }
+
 
     let passowrdValid = passwordOne.value
     if (!passowrdValid || passowrdValid.length < 8 || passowrdValid.includes(" ")) {
@@ -212,8 +215,9 @@ function SignUp() {
         >
           Sign-Up
         </Button>
-        <Link to='/signin' style={{ textDecoration: 'none', width: 'fit-content', margin: 'auto' }}>
+        {/* <Link to='/signin' style={{ textDecoration: 'none', width: 'fit-content', margin: 'auto' }}> */}
           <Button
+          onClick={() => navigate('/signin')}
             sx={{
               mt: 2,
               bgcolor: '#ff7f50',
@@ -222,12 +226,13 @@ function SignUp() {
               border: 'none',
               padding: '10px 20px',
               cursor: 'pointer',
+              width: 'fit-content',
             }}
             type='button'
           >
             Already Registered? Sign In
           </Button>
-        </Link>
+        {/* </Link> */}
       </form>
       <br />
       <SocialSignIn />
