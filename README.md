@@ -22,8 +22,9 @@ Second->
 1) INSTALL DOCKER DESKTOP on your machine
 2) git clone <Music Mates Repo>
 3) cd MusicMates (root repo)
-4) Command(/MusicMates) - 'docker-compose up'
-5) Access the site on 'localhost:5173'
+4) run the docker engine or docker desktop on your machine
+5) Command(/MusicMates) - 'docker-compose up'
+6) Access the site on 'localhost:5173'
 
 ## Project Members: 
 - Aditya Gupta
