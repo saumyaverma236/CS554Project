@@ -6,7 +6,21 @@ TODO
 
 ## How to Run
 
-TODO
+Two ways to run MusicMates.
+First-> 
+1) git clone <MusicMates Repo>
+2) cd backend
+3) Command(MusicMates/backend) - 'npm start'
+4) cd ../frontend
+5) Command(MusicMates/frontend) - 'npm run dev'
+6) Access the site on 'localhost:5173'
+
+Second->
+1) INSTALL DOCKER DESKTOP on your machine
+2) git clone <Music Mates Repo>
+3) cd MusicMates (root repo)
+4) Command(/MusicMates) - 'docker-compose up'
+5) Access the site on 'localhost:5173'
 
 ## Project Members: 
 - Aditya Gupta
