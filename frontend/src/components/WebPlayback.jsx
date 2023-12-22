@@ -1,10 +1,16 @@
-
 import { useState, useEffect, useRef } from 'react';
 import SearchModal from './search/SearchModal';
 import MusicPlayerScrubber from './MusicPlayerScrubber';
 
 import DeviceContext from '../context/DeviceContext';
 import axios from 'axios';
+
+import Container from '@mui/material/Container';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import CardMedia from '@mui/material/CardMedia';
 
 const track = {
 	name: "",
@@ -19,6 +25,14 @@ const track = {
 }
 
 function WebPlayback(props) {
+
+	const cardStyle = {
+        backgroundColor: '#ffe4e1', // Misty Rose background
+        boxShadow: '0 4px 15px 0 rgba(13, 144, 98, 0.2), 0 6px 20px 0 rgba(10, 156, 149, 0.19)',
+        padding: '2em',
+        textAlign: 'center',
+        margin: '20px'
+    };
 
 	let counter = 0
 
@@ -212,70 +226,78 @@ function WebPlayback(props) {
 	const handleCloseModals = () => {
 		setShowSearchModal(false);
 	}
+	const albumImageStyle = {
+        width: '80px',  // Adjust the width as needed
+        height: '80px', // Adjust the height as needed
+        margin: 'auto'  // Centers the image
+    };
 
 	
 
 	if (!is_active) {
+        return (
+            <DeviceContext.Provider value={{ deviceID: deviceID.current }}>
+				
+                <Container>
+                    <Box textAlign="center">
+                        <Typography variant="h6">
+                            Instance not active. Transfer your playback using your Spotify app
+                        </Typography>
+                        <Button variant="contained" color="primary" onClick={() => setShowSearchModal(true)}>
+                            Search for Songs
+                        </Button>
+                    </Box>
+
+                    {showSearchModal && (
+                        <SearchModal 
+                            isOpen={showSearchModal}
+                            handleClose={handleCloseModals}
+                        />
+                    )}
+                </Container>
+            </DeviceContext.Provider>
+        );
+    }else {
 		return (
-			<>
-			<DeviceContext.Provider value={{ deviceID: deviceID.current }}>
-				<div className="container">
-					<div className="main-wrapper">
-						<b> Instance not active. Transfer your playback using your Spotify app </b>
-					</div>
+            <DeviceContext.Provider value={{ deviceID: deviceID.current }}>
+                <Box className="container">
+                    <Box className="main-wrapper">
+                        <Card sx={{ backgroundColor: 'transparent', boxShadow: 'none' }}>
+                            <CardMedia
+                                component="img"
+                                image={current_track.album.images[0].url}
+                                alt={current_track.name}
+								// sx={albumImageStyle}
+                                className="now-playing__cover"
+                            />
 
-					<div>
-						<button onClick={() => { setShowSearchModal(true); }}>
-							Search for Songs
-						</button>
-					</div>
+                            <Box className="now-playing__side">
+                                <Typography variant="h6" className="now-playing__name">
+                                    {current_track.name}
+                                </Typography>
+                                <Typography variant="subtitle1" className="now-playing__artist">
+                                    {current_track.artists[0].name}
+                                </Typography>
 
-					{showSearchModal && (
-						<SearchModal 
-							isOpen={showSearchModal}
-							handleClose={handleCloseModals}
-						/>
-					)}
-				</div>
-			</DeviceContext.Provider>
-			</>)
-	} else {
-		return (
-			<>
-				<DeviceContext.Provider value={{ deviceID: deviceID.current }}>
-					<div className="container">
-						<div className="main-wrapper">
-
-							<img src={current_track.album.images[0].url} className="now-playing__cover" alt="" />
-							{/* <MusicPlayerScrubber playbackResponse={playbackResponse}/> */}
-
-
-							<div className="now-playing__side">
-								<div className="now-playing__name">{current_track.name}</div>
-								<div className="now-playing__artist">{current_track.artists[0].name}</div>
-
-								{props.isHost && (
-          <>
-           <button className="btn-spotify" onClick={() => { 
-									// setSelfUpdate(true)
-									player.previousTrack() 
-									setTimeout(() => {
-										player.getCurrentState().then(mystate => {
-											console.log('after previous track')
-											console.log(mystate)
-											emitPlayerState(mystate)
-											props.handleHostPlayerAction('Host skipped to previous song in queue')
-										});
-									}, 100);
-									}} >
-									&lt;&lt;
-								</button>
-
-								<button className="btn-spotify" onClick={() => {
-									//  setSelfUpdate(true)
-									 player.togglePlay() 
-									 
-									 // Set a delay of 100 milliseconds (adjust as needed)
+                                {props.isHost && (
+                                    <>
+                                        <Button className="btn-spotify" onClick={() => {
+										player.previousTrack() 
+										setTimeout(() => {
+											player.getCurrentState().then(mystate => {
+												console.log('after previous track')
+												console.log(mystate)
+												emitPlayerState(mystate)
+												props.handleHostPlayerAction('Host skipped to previous song in queue')
+											});
+										}, 100);
+										}} >
+										
+                                            &lt;&lt;
+                                        </Button>
+                                        <Button className="btn-spotify" onClick={() => {
+											player.togglePlay()
+										 // Set a delay of 100 milliseconds (adjust as needed)
 									setTimeout(() => {
 										player.getCurrentState().then(mystate => {
 											console.log('after toggle play')
@@ -285,100 +307,55 @@ function WebPlayback(props) {
 										props.handleHostPlayerAction('Host toggled play state of song')
 									}, 100);
 									 }} >
-									{is_paused ? "PLAY" : "PAUSE"}
-									
-								</button>
+									 {is_paused ? "PLAY" : "PAUSE"}
+                                     </Button>
+                                        <Button className="btn-spotify" onClick={() => {
+											player.nextTrack() 
+											setTimeout(() => {
+												player.getCurrentState().then(mystate => {
+													console.log('after next track')
+													console.log(mystate)
+													emitPlayerState(mystate)
+												});
+												props.handleHostPlayerAction('Host skipped to next song in queue')
+											}, 100);
+											}} >
+                                            &gt;&gt;
+                                        </Button>
+                                    </>
+                                )}
+                            </Box>
+                        </Card>
 
-								<button className="btn-spotify" onClick={() => { 
-									// setSelfUpdate(true)
-									player.nextTrack() 
-									setTimeout(() => {
-										player.getCurrentState().then(mystate => {
-											console.log('after next track')
-											console.log(mystate)
-											emitPlayerState(mystate)
-										});
-										props.handleHostPlayerAction('Host skipped to next song in queue')
-									}, 100);
-									}} >
-									&gt;&gt;
-								</button>
-          </>
-        )}
-								{/* <button className="btn-spotify" onClick={() => { 
-									// setSelfUpdate(true)
-									player.previousTrack() 
-									setTimeout(() => {
-										player.getCurrentState().then(mystate => {
-											console.log('after previous track')
-											console.log(mystate)
-											emitPlayerState(mystate)
-										});
-									}, 100);
-									}} >
-									&lt;&lt;
-								</button>
+                        <Button onClick={() => setShowSearchModal(true)} style={{ backgroundColor: '#ff7f50', width:'200px', height:'40px'}}>
+                            Search for Songs
+                        </Button>
 
-								<button className="btn-spotify" onClick={() => {
-									//  setSelfUpdate(true)
-									 player.togglePlay() 
-									 // Set a delay of 100 milliseconds (adjust as needed)
-									setTimeout(() => {
-										player.getCurrentState().then(mystate => {
-											console.log('after toggle play')
-											console.log(mystate)
-											emitPlayerState(mystate)
-										});
-									}, 100);
-									 }} >
-									{is_paused ? "PLAY" : "PAUSE"}
-								</button>
+                        <Box className='queued_songs_list'>
+                            <Typography variant="h6">Queued Songs</Typography>
+                            {queue.map(track => (
+                                <Box key={track.uri} sx={{ display: 'flex', alignItems: 'center' }}>
+                                    <CardMedia
+                                        component="img"
+                                        image={track.album.images[1].url}
+                                        alt={track.name}
+                                        sx={{ width: 48, height: 48, mr: 2 }}
+                                    />
+                                    <Box>
+                                        <Typography className="queue__name">{track.name}</Typography>
+                                        <Typography className="queue__artist">{track.artists[0].name}</Typography>
+                                    </Box>
+                                </Box>
+                            ))}
+                        </Box>
 
-								<button className="btn-spotify" onClick={() => { 
-									// setSelfUpdate(true)
-									player.nextTrack() 
-									setTimeout(() => {
-										player.getCurrentState().then(mystate => {
-											console.log('after next track')
-											console.log(mystate)
-											emitPlayerState(mystate)
-										});
-									}, 100);
-									}} >
-									&gt;&gt;
-								</button> */}
-							</div>
-
-                            <div>
-								<button onClick={() => { setShowSearchModal(true); }}>
-									Search for Songs
-								</button>
-							</div>
-
-							<div className='queued_songs_list'>
-								<h4>Queued Songs</h4>
-								{queue.map(track => {
-									return (
-										<div key={track.uri}>
-											<img src={track.album.images[1].url} alt={`Album cover for ${track.name} by ${track.artists[0].name}`} />
-											<div className="queue__name">{track.name}</div>
-											<div className="queue__artist">{track.artists[0].name}</div>
-										</div>
-									)
-								})}
-							</div>
-
-							{showSearchModal && (
-								<SearchModal 
-									isOpen={showSearchModal}
-									handleClose={handleCloseModals}
-								/>
-							)}
-						</div>
-					</div>
-				</DeviceContext.Provider>
-			</>
-		);
+                        {showSearchModal && (
+                            <SearchModal isOpen={showSearchModal} handleClose={() => setShowSearchModal(false)} />
+                        )}
+                    </Box>
+                </Box>
+            </DeviceContext.Provider>
+        );
 	}
 }
 

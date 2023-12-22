@@ -166,6 +166,9 @@ app.engine('handlebars', exphbs.engine({
 configRoutes(app);
 configRoutes2(app);
 
+let likeCount = 0;
+let dislikeCount = 0;
+const userVotes = new Map(); // Map to track user votes
 io.on('connection', (socket) => {
    console.log('new client connected', socket.id);
  
@@ -199,6 +202,27 @@ io.on('connection', (socket) => {
        });
 
     });
+
+    socket.on('like', ({ roomId }) => {
+      if (!userVotes.has(socket.id)) {
+        likeCount += 1;
+        userVotes.set(socket.id, 'like');
+        console.log('Current likeCount', likeCount);
+        io.emit('poll_update', { likes: likeCount, dislikes: dislikeCount });
+      }
+    });
+  
+    socket.on('dislike', ({ roomId }) => {
+      if (!userVotes.has(socket.id)) {
+        dislikeCount += 1;
+        userVotes.set(socket.id, 'dislike');
+        console.log('Current DislikeCount', likeCount);
+        io.emit('poll_update', { likes: likeCount, dislikes: dislikeCount });
+      }
+    });
+
+   // io.to(roomId).emit('poll_update', { likes, dislikes });
+
  
    socket.on('disconnect', () => {
      console.log('Disconnect Fired');

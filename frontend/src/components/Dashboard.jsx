@@ -162,7 +162,7 @@ function Dashboard() {
       {currentView === 'publicRooms' && publicRoomsData && (
         <PublicRooms
           publicRooms={publicRoomsData}
-          // onCardClick={(room) => navigate(`/rooms/${room._id}`)}
+          onCardClick={(room) => navigate(`/rooms/${room._id}`)}
         />
       )}
 
