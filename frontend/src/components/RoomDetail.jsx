@@ -1,16 +1,32 @@
 
 // import React, { useState } from 'react';
-import '../RoomDetail2.css'; // Your CSS file for styling
+
 import WebPlayback from './WebPlayback';
 import io from 'socket.io-client';
 import React,{useRef, useState, useEffect, useContext} from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams,useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import axios from 'axios';
 
+import Container from '@mui/material/Container';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import Box from '@mui/material/Box';
+import { Snackbar } from '@mui/material';
+
 const RoomDetail = () => {
+  const navigate = useNavigate();
   const [chat, setChat] = useState([{name:'a',message:'hello'}]); // Placeholder for chat messages
   const [newMessage, setNewMessage] = useState('');
+
+  const [snackbarOpen, setSnackbarOpen] = useState(false); // State for Snackbar open/close
+  const [snackbarMessage, setSnackbarMessage] = useState(''); // State for Snackbar message
+
+
+  const [likes, setLikes] = useState(0);
+  const [dislikes, setDislikes] = useState(0);
+  const [hasVoted, setHasVoted] = useState(false);
 
   const [playerState, setPlayerState] = useState(undefined)
   const { currentUser } = useContext(AuthContext);
@@ -21,6 +37,28 @@ const RoomDetail = () => {
   console.log(roomId)
   const [roomInfo, setRoomInfo] = useState(undefined); // State to hold room info
   const [isChatVisible, setIsChatVisible] = useState(true);
+
+  const handleLike = () => {
+    socketRef.current.emit('like', { roomId , likes: likes + 1});
+  };
+  
+  const handleDislike = () => {
+    socketRef.current.emit('dislike', { roomId, dislikes: dislikes + 1 });
+  };
+
+  const handleQuitRoom = () => {
+    // Perform any necessary cleanup
+    socketRef.current.disconnect();   
+    navigate('/dashboard'); 
+  };
+
+  const handleVote = (voteType) => {
+    if (!hasVoted) {
+      socketRef.current.emit(voteType, { roomId });
+      setHasVoted(true);
+    }
+  };
+
 
   const toggleChatVisibility = () => {
     setIsChatVisible(!isChatVisible);
@@ -36,6 +74,18 @@ const RoomDetail = () => {
       socketRef.current.disconnect();
     };
   }, []);
+
+  useEffect(() => {
+    socketRef.current.on('poll_update', ({ likes, dislikes }) => {
+      setLikes(likes);
+      setDislikes(dislikes);
+    });
+  
+    return () => {
+      socketRef.current.off('poll_update');
+    };
+  }, []);  
+
 
 
   useEffect(() => {
@@ -123,60 +173,147 @@ const RoomDetail = () => {
     });
   };
 
+  const copyRoomIdToClipboard = () => {
+    navigator.clipboard.writeText(roomId).then(() => {
+      console.log('Room ID copied to clipboard');
+      setSnackbarMessage('Room ID copied to clipboard'); 
+      setSnackbarOpen(true); 
+      
+    }).catch(err => {
+      console.error('Failed to copy Room ID: ', err);
+      
+    });
+  };
+
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === 'clickaway') {
+      return; 
+    }
+    setSnackbarOpen(false); 
+  };
+
+  const style = {
+    container: { padding: '20px' },
+    header: { marginBottom: '20px' },
+    player: { marginBottom: '20px' },
+    chatBox: {
+      marginBottom: '20px',
+      display: 'flex',         // Enable flexbox
+      flexDirection: 'column', // Stack children vertically
+      alignItems: 'center',    // Center children horizontally
+      justifyContent: 'center' // Center children vertically
+    },
+    messages: { maxHeight: '300px', overflowY: 'auto' },
+    messageInput: { marginTop: '10px' },
+    pollingSection: { marginTop: '20px', textAlign: 'center' }
+  };
+
   if (!roomInfo) {
-    return (
-        <h1>Getting Room Info</h1>
-    )
+    
+      return <Typography variant="h4">Getting Room Info</Typography>;
+    
   } else {
     return (
-        <div className="room-detail-container">
-          <div className="room-header">
-            <h1>Welcome to {roomInfo && roomInfo.title}</h1>
-            {isHost ? (
-              <div>
-                <p>You are the host of this room</p>
-              </div>
-            ) : (
-              <div>
-                <p>Welcome! Wait for the host to start the music party</p>
-              </div>
-            )}
-          </div>
-          <div className="music-player">
-            <WebPlayback token={window.localStorage.getItem('access_token')}
-              socketRef={socketRef}
-              playerState={playerState}
-              isHost={isHost}
-              handleHostPlayerAction={handleHostPlayerAction}
-              />
-          </div>
-          <div className={`chat-box ${isChatVisible ? 'visible' : 'hidden'}`}>
-            {/* Add a button to toggle chat visibility */}
-            <button onClick={toggleChatVisibility}>{isChatVisible ? 'Hide Chat' : 'Show Chat'}</button>
-            {isChatVisible && (
-              <div>
-                <div className="messages">
-                  {chat.map((obj, index) => (
-                    <div key={index} className="message">
-                      <span>{obj.name}: {obj.message}</span>
-                      
-                    </div>
-                  ))}
-                </div>
-                <div className="message-input">
-                  <input
-                    type="text"
-                    value={newMessage}
-                    onChange={(e) => setNewMessage(e.target.value)}
-                    placeholder="Send a message..."
-                  />
-                  <button onClick={handleSend}>Send</button>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      );
+      <Container style={style.container}>
+        <Box style={style.header}>
+          <Typography variant="h4">Welcome to {roomInfo && roomInfo.title}</Typography>
+          <Typography>{isHost ? 'You are the host of this room' : 'Welcome! Wait for the host to start the music party'}</Typography>
+        </Box>
+
+        <Box style={style.player}>
+          <WebPlayback
+            token={window.localStorage.getItem('access_token')}
+            socketRef={socketRef}
+            playerState={playerState}
+            isHost={isHost}
+            handleHostPlayerAction={handleHostPlayerAction}
+          />
+        </Box>
+
+        <Box className={`chat-box ${isChatVisible ? 'visible' : 'hidden'}`} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' , alignSelf: 'center', color: 'lightblue', marginLeft:'10px'}}>
+  <Button 
+    variant="outlined" 
+    onClick={toggleChatVisibility}
+    style={{ backgroundColor: '#40e0d0'}} 
+    sx={{ marginBottom: 2 }} // Add margin for spacing
+  >
+    {isChatVisible ? 'Hide Chat' : 'Show Chat'}
+  </Button>
+
+  {isChatVisible && (
+    <Box sx={{ width: '100%', maxWidth: '600px' , color: 'gray'}}> 
+      <Box className="messages" sx={{ width: '100%' }}> {/* Ensure messages take full width */}
+        {chat.map((obj, index) => (
+          <Typography key={index} sx={{ textAlign: 'center' }}>{obj.name}: {obj.message}</Typography>
+        ))}
+      </Box>
+      <Box className="message-input" sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+        <TextField
+          fullWidth
+          variant="outlined"
+          value={newMessage}
+          onChange={(e) => setNewMessage(e.target.value)}
+          placeholder="Send a message..."
+          className="form-control"
+          sx={{ flexGrow: 1, marginRight: 2 }} // Adjust TextField width
+        />
+        <Button 
+          variant="contained" 
+          onClick={handleSend}
+          style={{ backgroundColor: '#40e0d0',width:'100px',height:'40px'}} 
+        >
+          Send
+        </Button>
+      </Box>
+    </Box>
+  )}
+</Box>
+
+
+        <Box style={style.pollingSection}>
+  <Button
+    variant="contained"
+    style={{ backgroundColor: '#40e0d0',width:'100px',height:'40px'}} 
+    onClick={() => handleVote('like')}
+    disabled={hasVoted}
+  >
+    Like
+  </Button>
+  <Typography component="span">{likes}</Typography>
+  <Button
+    variant="contained"
+    style={{ backgroundColor: '#40e0d0',width:'100px',height:'40px'}} 
+    onClick={() => handleVote('dislike')}
+    disabled={hasVoted}
+  >
+    Dislike
+  </Button>
+  <Typography component="span">{dislikes}</Typography>
+</Box>
+      <Button
+        variant="contained"
+        onClick={handleQuitRoom}
+        style={{ backgroundColor: '#008080', width: '150px', height: '40px', marginTop: '20px',marginRight: '10px' }}
+      >
+        Quit Room
+      </Button>
+      <Button
+          variant="contained"
+          onClick={copyRoomIdToClipboard}
+          style={{ backgroundColor: '#008080', width: '150px', height: '40px', marginTop: '20px' }}
+        >
+          Copy Room ID
+        </Button>
+
+        <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+        message={snackbarMessage}
+      />
+      
+      </Container>
+    );
     };
   
 
