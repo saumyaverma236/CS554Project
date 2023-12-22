@@ -7,8 +7,8 @@ import bcryptjs from 'bcryptjs';
 import xss from 'xss';
 import redis from 'redis';
 
-const client = redis.createClient();
-client.connect().then(() => {});
+const client = redis.createClient(6379,'127.0.0.1');
+// client.connect().then(() => {});
 
 router.post("/login", async (req, res) => {
     try {
