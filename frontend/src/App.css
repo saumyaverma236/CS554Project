@@ -74,6 +74,7 @@
   50% { transform: scale(1.05); }
   100% { transform: scale(1); }
 }
+
 button {
   background-color: #40e0d0; /* Turquoise buttons */
   color: white;
@@ -81,15 +82,13 @@ button {
   padding: 10px 20px;
   cursor: pointer;
   transition: background-color 0.3s;
-  &:hover {
-    animation: pulse 1.5s infinite;
-    background-color: #ff7f50;
-  }
 }
 
 button:hover {
+  animation: pulse 1.5s infinite;
   background-color: #ff7f50; /* Coral on hover */
 }
+
 
 .button-secondary {
   background-color: #ffffff;  

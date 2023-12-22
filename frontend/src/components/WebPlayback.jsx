@@ -360,7 +360,7 @@ function WebPlayback(props) {
 								{queue.map(track => {
 									return (
 										<div key={track.uri}>
-											<img src={track.album.images[1].url}/>
+											<img src={track.album.images[1].url} alt={`Album cover for ${track.name} by ${track.artists[0].name}`} />
 											<div className="queue__name">{track.name}</div>
 											<div className="queue__artist">{track.artists[0].name}</div>
 										</div>

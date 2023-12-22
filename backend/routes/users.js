@@ -33,6 +33,47 @@ router.post("/login", async (req, res) => {
     }
   });
 
+  router.post("/NameUpdate", async (req, res) => {
+    try {
+      console.log("req", req.body);
+      const email_input = req.body.email;
+      const name_input = req.body.name;
+      console.log("name update route");
+      const user = await userData.NameUpdate(email_input, name_input);
+      const userId = user._id
+      console.log("session data login",req.session)
+      if (user) {
+        console.log("name Updated:", user);
+        return res.status(200).json({ userId });
+      } else {
+        console.log("User not found");
+        return res.status(404).json({ error: "Please Register to login" });
+      }
+    } catch (e) {
+      res.status(500).json({ error: e });
+    }
+  });
+
+  router.post("/PasswordUpdate", async (req, res) => {
+    try {
+      console.log("req", req.body);
+      const email_input = req.body.email;
+      const password_input = req.body.password;
+      console.log("password update route");
+      const user = await userData.PasswordUpdate(email_input, password_input);
+      const userId = user._id
+      if (user) {
+        console.log("Password Updated:", user);
+        return res.status(200).json({ userId });
+      } else {
+        console.log("User not found");
+        return res.status(404).json({ error: "Please Register to login" });
+      }
+    } catch (e) {
+      res.status(500).json({ error: e });
+    }
+  });
+
   
 router.post("/signUpUser", async (req,res) => {
         try{

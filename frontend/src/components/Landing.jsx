@@ -37,22 +37,22 @@ function Landing() {
         Sync and share your music in real-time with friends, creating collaborative playlists and democratically controlling the vibe with a group voting feature. Join a room, queue songs, and enjoy a unified listening experience with those around you!
       </Typography>
       <Box sx={{ display: 'flex' }}>
-        <CustomLink to='/signin'>
+        <Link to='/signin'>
           <Button 
             variant='contained' 
             sx={{ bgcolor: '#40e0d0', color: 'white', '&:hover': { bgcolor: '#40e0d0', opacity: [0.9, 0.8, 0.7] } }}
           >
             Sign In
           </Button>
-        </CustomLink>
-        <CustomLink to='/signup'>
+        </Link>
+        <Link to='/signup'>
           <Button 
             variant='contained' 
             sx={{ bgcolor: '#ff7f50', color: 'white', '&:hover': { bgcolor: '#ff7f50', opacity: [0.9, 0.8, 0.7] } }}
           >
             Sign Up
           </Button>
-        </CustomLink>
+        </Link>
       </Box>
     </PageContainer>
   );

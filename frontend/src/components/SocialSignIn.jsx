@@ -38,6 +38,7 @@ const SocialSignIn = () => {
           textTransform: 'none',
           fontWeight: 'bold',
           padding: '10px 20px',
+          width: 'fit-content',
         }}
       >
         Sign in with Google
