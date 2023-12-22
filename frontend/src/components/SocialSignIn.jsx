@@ -9,13 +9,13 @@ const SocialSignIn = () => {
     try {
        await doSocialSignIn();
       const user = JSON.parse(localStorage.getItem('user'));
-      console.log(user);
+      // console.log(user);
       const userData = {
         name: user.displayName || 'Default Name',
         email: user.email
       };
 
-      console.log("Entering user data to database");
+      // console.log("Entering user data to database");
         
       await axios.post('http://localhost:3000/usersData/signup', userData);
       await axios.post('http://localhost:3000/usersData/login', {

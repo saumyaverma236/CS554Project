@@ -13,7 +13,7 @@ function SignUp() {
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [ pwMatch, setPwMatch] = useState('');
   const navigate = useNavigate();
-  console.log("currentUser",currentUser)
+  // console.log("currentUser",currentUser)
 
   const showErrorSnackbar = (message) => {
     setError(message);
@@ -107,7 +107,7 @@ function SignUp() {
         displayName.value
       );
 
-      console.log('User created:', userCreated);
+      // console.log('User created:', userCreated);
 
       const serverResponse = await axios.post('http://localhost:3000/usersData/signUpUser', {
         name: displayName.value,
@@ -116,7 +116,7 @@ function SignUp() {
       });
 
       const insertedUserId = serverResponse.data.insertedId;
-      console.log('Inserted User ID:', insertedUserId);
+      // console.log('Inserted User ID:', insertedUserId);
       if(insertedUserId){
         showErrorSnackbar("You are now registered. Please Login to MusicMates")
         navigate('/signin');

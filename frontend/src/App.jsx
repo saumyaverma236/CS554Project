@@ -26,6 +26,7 @@ function App() {
           <Route path='/signup' element={<SignUp />} />
           <Route path='/signout' element={<SignOut />} />
           <Route path='/rooms/:roomId' element={<RoomDetail />} />
+          <Route path='*' element={<h2>404: Page Not Found</h2>} /> 
         </Routes>
       </div>
     </AuthProvider>
