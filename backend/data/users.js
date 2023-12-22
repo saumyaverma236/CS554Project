@@ -3,6 +3,49 @@ import bcrypt from "bcrypt";
 import validator from '../validation.js';
 import { ObjectId } from "mongodb";
 
+const NameUpdate = async (email, name) => {
+  console.log("name update data", email, name);
+  const userCollection = await users();
+
+  // Specify the query to find the document to update
+  const query = { email: email };
+
+  // Specify the update operation using $set to update the 'name' field
+  const updateOperation = {
+    $set: {
+      name: name
+    }
+  };
+
+  // Use findOneAndUpdate to update the document
+  const updateInfo = await userCollection.findOneAndUpdate(query, updateOperation, { returnDocument: 'after' });
+  console.log("updated info", updateInfo.value);
+  return updateInfo.value; // Return the updated document
+};
+
+const PasswordUpdate = async (email, password) => {
+  console.log("password update data", email, password);
+  const salt = await bcrypt.genSalt(10);
+    const newPassword = await bcrypt.hash(password, salt);
+  const userCollection = await users();
+
+  // Specify the query to find the document to update
+  const query = { email: email };
+
+  // Specify the update operation using $set to update the 'name' field
+  const updateOperation = {
+    $set: {
+      password: newPassword
+    }
+  };
+
+  // Use findOneAndUpdate to update the document
+  const updateInfo = await userCollection.findOneAndUpdate(query, updateOperation, { returnDocument: 'after' });
+  console.log("updated info", updateInfo.value);
+  return updateInfo.value; // Return the updated document
+};
+
+
 const signUpUser = async (name, email, password) => {
     console.log("signupuser")
     // name = validator.validName(name, 'Name');
@@ -112,6 +155,8 @@ const getUserByEmail = async (email) => {
 };
 
 export{
+    NameUpdate,
+    PasswordUpdate,
     signUpUser,
     createUser,
     getAllUsers,
