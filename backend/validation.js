@@ -39,14 +39,55 @@ const exportedMethods = {
 
   validName(name, varName) {
     name = name.trim();
-    let nameValid = /^[a-zA-Z]/; // Regular expression to match valid firstName
-    if (!nameValid.test(name)) {
-      throw `Invalid ${varName} name.`;
+
+    if (nameValid.length === 0){
+      throw [400,`Name cannot be an empty string or string with just spaces`];
+      return;
     }
-    if (name.length < 2 || name.length > 25)
-      throw `name should be in length between 2 to 25.`;
+    if(!name.match(/^[a-z ,.'-]+$/gi)){
+      throw [400,`Name shouldn't contain numbers`];
+    }
+    if (name.length < 2 || name.length > 26)
+      throw [400,`Name should contain atleast 2 characters and less than 26 characters`];
     return name;
   },
+
+  validPassword(password, varName){
+    console.log("password check")
+    if (!password || password.length < 8 || password.includes(" ")) {
+      console.error("Invalid password: length or spaces");
+      throw [400,`Password must be at least 8 characters long and cannot contain empty spaces`];
+    }
+    const upperCase = /[A-Z]/;
+    const numberCase = /[0-9]/;
+    const specialCharCase = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
+    if (
+      !upperCase.test(password) ||
+      !numberCase.test(password) ||
+      !specialCharCase.test(password)
+    ) {
+      console.error("Invalid password: criteria not met");
+      throw [400,` Password must contain at least one uppercase character, one number, and one special character`];
+    }
+    console.log("password", password)
+    return password;    
+  },
+  
+
+  validEmail(email, varName){
+    let emailValid = email.trim().toLowerCase();
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!regex.test(emailValid)) {
+      throw [400,"Invalid email address"];
+    }
+    if (!emailValid.endsWith("@gmail.com")) {
+      throw [400,"Email domain must be @gmail.com"];
+    }
+    if (!/^[^\s@]{3,}@gmail\.com$/.test(emailValid)) {
+      throw [400,"Email address must have at least 3 characters before the @gmail.com domain"];
+    }
+    return emailValid;
+  }
 
 };
 

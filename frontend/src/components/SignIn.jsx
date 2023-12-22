@@ -130,7 +130,7 @@
 // export default SignIn;
 
 import React, { useContext, useState } from 'react'; // Fixed by importing useState
-import { Link, Navigate } from 'react-router-dom';
+import { Link, useNavigate, Navigate } from 'react-router-dom';
 import axios from 'axios';
 import { TextField, Button, Card, CardContent, Typography, Snackbar } from '@mui/material';
 import { AuthContext } from '../context/AuthContext';
@@ -142,6 +142,7 @@ function SignIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -243,11 +244,14 @@ function SignIn() {
           <Button sx={{ mt: 2, bgcolor: '#ff7f50', '&:hover': { bgcolor: '#e06c45' } }} onClick={passwordReset} fullWidth>
             Forgot Password
           </Button>
-          <Link to='/signup' style={{ textDecoration: 'none' }}>
-            <Button sx={{ mt: 2, mb: 2, bgcolor: '#40e0d0', '&:hover': { bgcolor: '#36b4a8' } }} fullWidth>
-              Not a Member? Sign Up
-            </Button>
-          </Link>
+          <Button
+            onClick={() => navigate('/signup')}
+            sx={{ mt: 2, mb: 2, bgcolor: '#40e0d0', '&:hover': { bgcolor: '#36b4a8' } }}
+            fullWidth
+          >
+            Not a Member? Sign Up
+        </Button>
+
           <SocialSignIn />
         </CardContent>
       </Card>

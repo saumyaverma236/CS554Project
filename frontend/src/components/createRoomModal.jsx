@@ -47,6 +47,8 @@ import axios from 'axios';
 
 function CreateRoomModal(props) {
     const navigate = useNavigate();
+    const [error, setError] = useState('');
+    const [openSnackbar, setOpenSnackbar] = useState(false);
     
     const [roomName, setRoomName] = useState(
       props.currentUser ? `${props.currentUser.displayName}'s Room` : "My Room"
@@ -54,10 +56,32 @@ function CreateRoomModal(props) {
     
   const [isPublic, setIsPublic] = useState(true);
 
-  
+  const showErrorSnackbar = (message) => {
+    setError(message);
+    setOpenSnackbar(true);
+  };
+
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpenSnackbar(false);
+  };
   
 
   function handleRoomNameChange(event) {
+
+    let nameValid = event.target.value.trim()
+    if (nameValid.length === 0){
+      showErrorSnackbar(`Name cannot be an empty string or string with just spaces`);
+      return;
+    }
+
+    if(!(nameValid.length>1 & nameValid.length<26)){
+      showErrorSnackbar(`Name should contain atleast 2 characters and less than 26 characters`)
+      return;
+    }
+
     setRoomName(event.target.value);
   }
 
