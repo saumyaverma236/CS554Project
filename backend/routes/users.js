@@ -12,20 +12,20 @@ const client = redis.createClient();
 
 router.post("/login", async (req, res) => {
     try {
-      console.log("req", req.body);
+      // console.log("req", req.body);
       const email_input = req.body.email;
-      console.log("login user route");
+      // console.log("login user route");
       const user = await userData.getUserByEmailForLogin(email_input);
       const userId = user._id
-      console.log("session data login",req.session)
+      // console.log("session data login",req.session)
       if (user) {
-        console.log("User Found:", user);
+        // console.log("User Found:", user);
         await client.set('userId', JSON.stringify(userId));
         let stored_user = await client.get('userId');
-        console.log("stored",stored_user)
+        // console.log("stored",stored_user)
         return res.status(200).json({ userId });
       } else {
-        console.log("User not found");
+        // console.log("User not found");
         return res.status(404).json({ error: "Please Register to login" });
       }
     } catch (e) {
@@ -35,18 +35,18 @@ router.post("/login", async (req, res) => {
 
   router.post("/NameUpdate", async (req, res) => {
     try {
-      console.log("req", req.body);
+      // console.log("req", req.body);
       const email_input = req.body.email;
       const name_input = req.body.name;
-      console.log("name update route");
+      // console.log("name update route");
       const user = await userData.NameUpdate(email_input, name_input);
       const userId = user._id
-      console.log("session data login",req.session)
+      // console.log("session data login",req.session)
       if (user) {
-        console.log("name Updated:", user);
+        // console.log("name Updated:", user);
         return res.status(200).json({ userId });
       } else {
-        console.log("User not found");
+        // console.log("User not found");
         return res.status(404).json({ error: "Please Register to login" });
       }
     } catch (e) {
@@ -56,17 +56,17 @@ router.post("/login", async (req, res) => {
 
   router.post("/PasswordUpdate", async (req, res) => {
     try {
-      console.log("req", req.body);
+      // console.log("req", req.body);
       const email_input = req.body.email;
       const password_input = req.body.password;
-      console.log("password update route");
+      // console.log("password update route");
       const user = await userData.PasswordUpdate(email_input, password_input);
       const userId = user._id
       if (user) {
-        console.log("Password Updated:", user);
+        // console.log("Password Updated:", user);
         return res.status(200).json({ userId });
       } else {
-        console.log("User not found");
+        // console.log("User not found");
         return res.status(404).json({ error: "Please Register to login" });
       }
     } catch (e) {
@@ -77,13 +77,13 @@ router.post("/login", async (req, res) => {
   
 router.post("/signUpUser", async (req,res) => {
         try{
-            console.log("sign up route")
+            // console.log("sign up route")
             let details = req.body;
             let name = details.name;
             let email = details.email;
             let password = details.password;
             const addedUser = await userData.signUpUser(name, email, password)
-            console.log(addedUser)
+            // console.log(addedUser)
             return res.status(200).json(addedUser);
         }
         catch (e) {
@@ -101,17 +101,17 @@ router.post("/signup", async (req, res) => {
     try {
       
         const existingUser = await userData.getUserByEmailForLogin(email);
-        console.log("Existing user:",existingUser);
+        // console.log("Existing user:",existingUser);
         if (!existingUser) {
             
             try {
-                console.log(email);
+                // console.log(email);
                   const newUser = await userData.createUser(xss(name), xss(email));
                   req.session.user = {
                       id: newUser._id.toString(),
                   }
                   // req.session.user = {...req.session.user, _id: newUser._id.toString()};
-                  console.log(req.session.user);
+                  // console.log(req.session.user);
                   return res.status(200).json({_id: newUser._id, name: newUser.name, email: newUser.email});gi 
               } catch (e) {
                   return res.status(e[0]).json({error:e[1]});

@@ -4,50 +4,44 @@ import validator from '../validation.js';
 import { ObjectId } from "mongodb";
 
 const NameUpdate = async (email, name) => {
-  console.log("name update data", email, name);
+  // console.log("name update data", email, name);
   const userCollection = await users();
 
-  // Specify the query to find the document to update
-  const query = { email: email };
+ const query = { email: email };
 
-  // Specify the update operation using $set to update the 'name' field
-  const updateOperation = {
+ const updateOperation = {
     $set: {
       name: name
     }
   };
 
-  // Use findOneAndUpdate to update the document
-  const updateInfo = await userCollection.findOneAndUpdate(query, updateOperation, { returnDocument: 'after' });
-  console.log("updated info", updateInfo.value);
-  return updateInfo.value; // Return the updated document
+ const updateInfo = await userCollection.findOneAndUpdate(query, updateOperation, { returnDocument: 'after' });
+  // console.log("updated info", updateInfo.value);
+  return updateInfo.value; 
 };
 
 const PasswordUpdate = async (email, password) => {
-  console.log("password update data", email, password);
+  // console.log("password update data", email, password);
   const salt = await bcrypt.genSalt(10);
     const newPassword = await bcrypt.hash(password, salt);
   const userCollection = await users();
 
-  // Specify the query to find the document to update
   const query = { email: email };
 
-  // Specify the update operation using $set to update the 'name' field
   const updateOperation = {
     $set: {
       password: newPassword
     }
   };
 
-  // Use findOneAndUpdate to update the document
   const updateInfo = await userCollection.findOneAndUpdate(query, updateOperation, { returnDocument: 'after' });
-  console.log("updated info", updateInfo.value);
-  return updateInfo.value; // Return the updated document
+  // console.log("updated info", updateInfo.value);
+  return updateInfo.value; 
 };
 
 
 const signUpUser = async (name, email, password) => {
-    console.log("signupuser")
+    // console.log("signupuser")
     // name = validator.validName(name, 'Name');
     // email = validator.checkString(email, 'Email');
     // email = validator.validateEmailId(email);
@@ -77,10 +71,14 @@ const signUpUser = async (name, email, password) => {
     };
 
     const insertInfo = await userCollection.insertOne(info);
+    // console.log("signed up user", insertInfo)
     return insertInfo
   };
 
 const createUser = async (name, email) => {
+  name = validator.validName(name, 'Name');
+  email = validator.checkString(email, 'Email');
+  email = validator.validEmail(email);
     // if(!helper.validName(name)){
     //    throw [400,"Name provided is not valid"]
     // }
@@ -110,6 +108,7 @@ const createUser = async (name, email) => {
    
      const newId = insertInfo.insertedId;
      const userDetail = await getUserById(newId.toString());
+    //  console.log("created user", userDetail)
    
      return userDetail;
    };
@@ -149,7 +148,7 @@ const getUserByEmail = async (email) => {
             return user;
         }
     });
-    console.log("User Found");
+    // console.log("User Found");
     
     return user;
 };

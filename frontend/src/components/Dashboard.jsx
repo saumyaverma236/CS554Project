@@ -62,7 +62,7 @@ function Dashboard() {
     try {
       const response = await axios.get('http://localhost:3000/rooms/publicRooms');
       const rooms = response.data;
-      console.log("PUBLIC ROOMS:", rooms)
+      // console.log("PUBLIC ROOMS:", rooms)
       setPublicRoomsData(rooms);
       // setPublicRoomsModalOpen(true);
      // setShowPublicRooms(true);
@@ -73,7 +73,7 @@ function Dashboard() {
   };
 
   const handleCreateRoom = () => {
-    console.log('create room button tapped');
+    // console.log('create room button tapped');
     setModalOpen(true);
   };
 

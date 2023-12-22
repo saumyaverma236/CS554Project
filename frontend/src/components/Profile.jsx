@@ -125,6 +125,10 @@ function Profile() {
     setNewPassword('');
   };
 
+  const isEmailPasswordSignIn = () => {
+    return currentUser && currentUser.providerData.some((info) => info.providerId === 'password');
+  };
+
 //   const handleSignOut = async () => {
 //     try {
 //       await doSignOut();
@@ -174,7 +178,7 @@ function Profile() {
         )}
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        {isChangingPassword && (
+        {isChangingPassword && isEmailPasswordSignIn() && (
           <>
             <div style={{ display: 'flex', marginBottom: '10px' }}>
               <label style={{ marginRight: '10px' }}>Current Password:</label>
@@ -196,6 +200,7 @@ function Profile() {
             </div>
           </>
         )}
+        {isEmailPasswordSignIn() && (
         <Button
           onClick={isChangingPassword ? handleChangePassword : handleTogglePasswordChange}
           style={{
@@ -211,7 +216,13 @@ function Profile() {
         >
           {isChangingPassword ? 'Change Password' : 'Change Password'}
         </Button>
+        )}
 
+        {!isEmailPasswordSignIn() && (
+          <Typography variant="body2" color="textSecondary" style={{ fontSize: '16px' }}>
+            Cannot change password for social sign-in
+          </Typography>
+        )}
         {/* <Button
           onClick={handleSignOut}
           style={{

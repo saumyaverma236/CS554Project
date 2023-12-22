@@ -2,11 +2,11 @@
 // See: https://firebase.google.com/docs/web/learn-more#config-object
 
 export default {
-  apiKey: "AIzaSyAUY_Kyk4el8ojd4OK_Vf27X3OgvOVQk74",
-  authDomain: "cs-554-ab9fe.firebaseapp.com",
-  projectId: "cs-554-ab9fe",
-  storageBucket: "cs-554-ab9fe.appspot.com",
-  messagingSenderId: "69271279736",
-  appId: "1:69271279736:web:2faf00e6868008ca81758d",
-  measurementId: "G-YTBD8S10HY"
+  apiKey: import.meta.env.VITE_FIREBASE_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
 };
